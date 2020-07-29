@@ -1,0 +1,27 @@
+name: mobile_pundits
+description: A flexible, recolorable theme with many regions.
+type: theme
+version: VERSION
+package: Core
+core: 8.x
+# Replace an entire library.
+
+libraries:
+ - mobile_pundits/global-styling-and-scripts
+
+regions:
+  header:  Header
+  main_menu: Main menu
+  help:  Help
+  services: Services
+  resources: resources
+  awards: awards
+  page_top: Page top
+  page_bottom: Page bottom
+  highlighted: Highlighted
+  sub_footer: Sub footer
+  slideshow: slideshow
+  featured: Featured
+  content: Content
+  partner: Partner
+  footer: Footer

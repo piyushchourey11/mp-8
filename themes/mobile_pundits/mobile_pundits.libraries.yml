@@ -1,0 +1,38 @@
+global-styling-and-scripts:
+  css:
+    theme:
+      css/bootstrap-select.min.css: {}
+      css/jquery.fullPage.css: {}
+      css/examples.css: {}
+      css/bootstrap.min.css: {}
+      css/style.css: {}
+      css/font-awesome.min.css: {}
+      css/important.css: {}
+      css/owl.transitions.css: {}
+      css/responsive.css: {}
+      css/inner-page.css: {}
+      css/slider.css: {}
+      css/responsive-inner.css: {}
+      css/jquery.bxslider.css: {}
+      css/mycss.css: {}
+      css/color_style.css: {}
+      css/ekko_lightbox.css: {}
+      css/drupal_login.css: {}
+
+  js:
+    js/jquery.js: {}
+    js/bootstrap-select.min.js: {}
+    js/ekko_lightbox.min.js: {}
+    js/bootstrap.min.js: {}
+    js/owl.carousel.min.js: {}
+    js/main.js: {}
+    js/custom_task.js: {}
+    js/validation_internal.js: {}
+    js/jquery.fullPage.min.js: {}
+    js/jquery.validate.min.js: {}
+    js/responsive_tabs.js: {}
+    js/swipe.js: {}
+    js/captcha-api.js: {}
+  dependencies:
+    - core/drupalSettings
+

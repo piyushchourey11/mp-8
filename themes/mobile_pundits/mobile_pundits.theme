@@ -1,0 +1,74 @@
+<?php
+
+/**
+* Implements hook_preprocess().
+*/
+function mobile_pundits_preprocess(&$variables) {
+	if ($node = \Drupal::request()->attributes->get('node')) {
+        $variables['attributes']['class'][] = 'page-node-' . $node->id();
+      }
+}
+
+function mobile_pundits_js_settings_alter(array &$settings,
+    \Drupal\Core\Asset\AttachedAssetsInterface $assets
+) {
+    global $base_url;
+    // $path_settings = [
+    //   'baseUrl' => $base_url
+    // ];
+    $settings['basePath'] =  $base_url;
+ }
+
+function mobile_pundits_preprocess_block(&$variables){
+  if(isset($variables['attributes']['id'])){
+    if(($variables['attributes']['id'] == 'carousel_block') || ($variables['attributes']['id'] == 'front_page_award_block')|| 
+       ($variables['attributes']['id'] == 'front_page_resources_block') || ($variables['attributes']['id'] == 'service_block') ||
+       ($variables['attributes']['id'] == 'partner_carousel_block')) {
+        $variables['#cache']['max-age'] = 0;
+       }
+    }
+}
+
+
+//For add class on webform :-hook_form_alter() help to add custom class and id on form and form button
+// function mobile_pundits_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+// honeypot_add_form_protection($form, $form_state, array('honeypot', '20'));
+// if ($form_id == 'webform_client_form_55') {//light box contact formon  55
+// $form['actions']['submit']['#attributes']['id'][] = "light_frm_submit_btn";
+// $form['#attributes']['class'] = "contact_form_valid form-inline  ";
+// $form['actions']['submit']['#attributes']['class'][] = 'light_box_from_btn   btn  btn-default  btn-lets col-md-12 col-sm-12 col-xs-12  form-group  col-md-12 col-sm-12';
+// }
+// if ($form_id == 'webform_client_form_99') {//Carousel Popup contact form
+// $form['actions']['submit']['#attributes']['id'][] = "popup_submit_btn";
+// $form['#attributes']['class'] = "contact_form_valid form-inline ";
+// $form['actions']['submit']['#attributes']['class'][] = 'popup_page_from_btn btn btn btn-default btn-lets-cli m-b-0  text-center';
+// }
+// if ($form_id == 'webform_client_form_292') {//Checklist page form ,free consultation forms
+// $form['#attributes']['class'] = "contact_form_valid form-inline ";
+// $form['actions']['submit']['#attributes']['class'][] = 'checklist_form_btn btn-lets col-md-12';
+
+// $honey_form_value = $form['form_build_id']['#id'];
+// $honey_form_id = $form['form_token']['#default_value'];
+// $_SESSION['honey_form_value'] = $honey_form_value;
+// $_SESSION['honey_form_id'] = $honey_form_id;  
+// }
+// if ($form_id == 'webform_client_form_350') {//checklist popup page page form 
+// $form['actions']['submit']['#attributes']['id'][] = "checklist_popup_btn";
+// $form['#attributes']['class'] = "contact_form_valid form-inline ";
+// $form['actions']['submit']['#attributes']['class'][] = ' btn-lets btn btn-default submt-btn col-sm-12 col-xs-12 col-md-6';
+// }
+// if ($form_id == 'webform_client_form_171') {//Framework page form(Instamobile page form)
+// $form['actions']['submit']['#attributes']['id'][] = "framework_form_submit_btn";
+// $form['actions']['submit']['#attributes']['class'][] = ' btn btn-default submt-btn';
+// }
+// //$form["#validate"][]= 'Content_custom_modules_form_validate';
+//  /* Function to protect form spam using honeypot */
+//    // honeypot_add_form_protection($form, $form_state, array('honeypot', '20'));
+
+// }
+
+
+?>
+
+

@@ -1,0 +1,168 @@
+{%
+set body_classes = [
+'body-space',
+not logged_in ? 'not-logged-in',
+not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
+path_info.args ? 'path-' ~ path_info.args,
+node_type ? 'page-node-type-' ~ node_type|clean_class,
+db_offline ? 'db-offline',
+theme.settings.navbar_position ? 'navbar-is-' ~ theme.settings.navbar_position,
+theme.has_glyphicons ? 'has-glyphicons',
+current_path ? 'context' ~ current_path|clean_class,
+]
+%}
+
+<!DOCTYPE html>
+<html{{ html_attributes }}>
+  <head>
+
+    <head-placeholder token="{{ placeholder_token }}">
+    <link href="{{ base_path }}{{ active_theme_path() }}/images/favicon.ico" rel="apple-touch-icon" />
+    <link rel="shortcut icon" href="{{ base_path }}{{ active_theme_path() }}/images/favicon.ico" type="image/vnd.microsoft.icon"/>
+    <title>{{ head_title|safe_join(' | ') }}</title>
+    <css-placeholder token="{{ placeholder_token }}">
+    <js-placeholder token="{{ placeholder_token }}">
+    
+ <script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-6615735-3', 'mobilepundits.com');
+	  ga('send', 'pageview');
+   
+
+</script>
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement('script'),s0=document.getElementsByTagName('script')[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/55b1f33a65c887f36f65f2b2/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+
+</script>
+{# End of Tawk.to Script #}
+  </head>
+  <body {{ attributes.addClass(body_classes) }}>
+   <div id="back_bg_popup">
+            <div class="loader_image_popup">
+                <img src="{{ base_path }}{{ active_theme_path() }}/images/req/bx_loader.gif" class="loader_gif">
+            </div>
+        </div>
+        <div id="skip-link">
+            <a href="#main-content" class="element-invisible element-focusable">{{ 'Skip to main content'|t }}</a>
+        </div>
+        {{ page_top }}
+        {{ page }}
+        {{ page_bottom }}
+        
+        <!-- Light box form-->
+        <div class="light-form" id="light_pop_form">
+            <a class="lig_close " href='javascript:void(0)' onclick="$(this).closest('#light_pop_form').hide()" >&times;</a>
+            <h4 class="light-info"> Please fill the form below to download the Insight.</h4>
+            <span id="insight-talkmsg" class="deliverymsg " style="display: none">
+                <i class="fa fa-check-circle"></i>
+                Insights Download link sent to your email, please check your mail for more info 
+            </span>
+           webform-client-form-55
+        </div>  
+        <!-- Light box form-->
+
+      <!--Contact us page form   Start-->
+        <div id="contact_page_form" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content clearfix">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title head-cont"><i class="fa  fa-envelope-o mob-icon-con" ></i> Contact Us</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="mob-scroll">
+                                <div class="form-main pull-left col-md-8 col-sm-8 col-xs-12 nopadding"> 
+                                    <span id="contact_page_talkmsg" class="success_msg_class" style="display: none"> Thanks for contacting us, someone from our team will be in touch with you soon.</span>
+                                    webform-client-form-292
+                                    
+                                   
+                                    
+                                </div>
+                                <div class="pull-right  col-md-4 col-sm-4 col-xs-12 right-form">
+                                    <div class="call_us">
+                                        <h3 class="popup_head_2"><span></span>Call Us</h3>
+                                        <ul class="contact_no">
+                                          
+                                            <li class="c_flag_uk">  USA : +1-732-734-4774</li>
+                                            <li class="c_flag_aus"> AUS : +61-2-8015-5723</li>
+                                            <li class="c_flag_ireland" style="font-size:13px"> FRANCE : +33-7-68-79-77-46</li>
+                                            <li class="c_flag_india"> INDIA : +91-731-402-5351</li>
+                                        </ul>
+                                    </div>
+                                    <div class="email_us">
+                                        <h3 class="popup_head_2 email-ic"><span class=""></span>Email Us</h3>
+                                        <ul class="mail_info">
+                                            <li>
+                                                <label>Sales :</label>
+                                                <a href="mailto:sales@mobilepundits.com?Subject=Hello%20again" target="_top">sales@mobilepundits.com</a></li>
+                                            <li>
+                                                <label>Marketing :</label>
+                                                <a href="mailto:marketing@mobilepundits.com?Subject=Hello%20again" target="_top">marketing@mobilepundits.com</a></li>
+                                            <li>
+                                                <label>General Information :</label>
+                                                <a href="mailto:info@mobilepundits.com?Subject=Hello%20again" target="_top">info@mobilepundits.com</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Contact us page form   END-->  
+
+        <!--Contact form popup Start-->
+        <div class="modal fade" id="dwn_alert" role="dialog">
+            <div class="model_dialog_popup">
+                <div class="modal-dialog "> 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div id="close_button_div">
+                            <button id="modal_dismiss_btn" type="button" class="close-btn btn btn-default btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                        <h1>Please fill the form</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Contact form popup End-->
+
+                <!--Contact form popup Start-->
+        <div class="modal fade" id="slider_popup" role="dialog">
+            <div class="model_dialog_popup">
+                <div class="modal-dialog "> 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div id="close_button_div">
+                            <button id="modal_dismiss_btn" type="button" class="close-btn btn btn-default btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                        <h1>Please fill the form</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Contact form popup End-->
+
+
+     
+{% if page.footer %}
+  {{ page.footer }} 
+ {% endif %}
+<js-bottom-placeholder token="{{ placeholder_token }}">
+</body>
+</html>

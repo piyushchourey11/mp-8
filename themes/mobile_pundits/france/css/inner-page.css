@@ -1,0 +1,138 @@
+@CHARSET "ISO-8859-1";
+/* Reset CSS
+ * --------------------------------------- */
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+	padding: 0;
+	margin: 0;
+	font-family: 'Lato', sans-serif;
+}
+ @font-face {
+ font-family: 'FontAwesome';
+ src: url('../fonts/fontawesome-webfont.eot?v=4.5.0');
+ src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.5.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.5.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.5.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.5.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.5.0#fontawesomeregular') format('svg');
+ font-weight: normal;
+ font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('../fonts/opensans-regular-webfont.eot');
+    src: url('../fonts/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/opensans-regular-webfont.woff2') format('woff2'),
+         url('../fonts/opensans-regular-webfont.woff') format('woff'),
+         url('../fonts/opensans-regular-webfont.ttf') format('truetype'),
+         url('../fonts/opensans-regular-webfont.svg#open_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'latoregular';
+    src: url('../fonts/lato-regular-webfont.eot');
+    src: url('../fonts/lato-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/lato-regular-webfont.woff2') format('woff2'),
+         url('../fonts/lato-regular-webfont.woff') format('woff'),
+         url('../fonts/lato-regular-webfont.ttf') format('truetype'),
+         url('../fonts/lato-regular-webfont.svg#latoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+.second-navbar {background:#efefef; width:100%;    height: 40px !important;    position: relative;
+    z-index: 9999; }
+.second-navbar-nav li > a {  line-height:20px !important; padding:10px 20px !important; font-size:13px;}
+.second-navbar-nav li > a:last-child {   padding: 10px 11px 8px 9px !important;}
+.second-navbar-nav li > a:active, .second-navbar-nav li > a:hover  {border-bottom:3px solid #e4474e;} 
+.m-t-45 {margin-top:45px;}
+.f-15 {font-size:15px;}
+.headding-leftr {font-size:30px;}
+.f-30 {font-size:30px;}
+.f-18 {font-size:18px;}
+.m-b-30 {margin-bottom:30px;}
+.inner-list {margin:0; padding:0;}
+.inner-list li {font-size:14px; background:url(../images/li-bullet.png) no-repeat  0 14px;     padding:10px 0 0 25px; list-style:none;}
+.grey-bg {background:#f1f1f1; padding:70px 0;}
+.pad-80 {padding:80px 0;}
+.content-inner p {font-size:14px; }
+.white-bg {background:#fff;  padding:70px 0;}
+
+
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
+  float: none;
+}
+
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 0;
+}
+
+.tabs-left > .nav-tabs {
+  float: left; width:315px;
+  margin-right: 0px;  box-sizing: border-box;
+  border-right: 1px solid #ddd; 
+}
+
+.tabs-left > .nav-tabs > li > a {
+       border-radius: 0px; 
+	   border-bottom:1px solid #bbbbbb; line-height:23px; height:45px; outline:none; padding:10px 20px; border-left:3px solid #eee;
+}
+
+
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-color: #ddd transparent #ddd #ddd;
+  *border-right-color: #ffffff;
+}
+
+.tab-panel-inner h3 { font-size:24px; margin:10px 0;}
+.tabs-horizantical { background:#eaeaea;}
+.tabs-left {border:1px solid #bbbbbb; height:355px;}
+
+*::after, *::before {
+    box-sizing: border-box;
+}
+*::after, *::before {
+    box-sizing: border-box;
+}
+.tabs-left > .nav-tabs .active > a, .tabs-left > .nav-tabs .active > a:hover, .tabs-left > .nav-tabs .active > a:focus {
+    border-color:#fff;
+}
+.tabs-left > .nav-tabs > li > a:hover, .tabs-left > .nav-tabs > li > a:focus {
+      border-left: 3px solid #168ddb !important; background:#fff; border-right:1px solid #eee;
+    border-radius: 0px;
+    color: #168ddb;
+    font-weight: bold ; 	   border-bottom:1px solid #bbbbbb; border-top:1px solid #bbbbbb  
+}
+.tabs-left >  li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover { background: #fff;
+    border-left: 3px solid #168ddb !important;  padding:10px 20px;
+    border-radius: 0px;
+    color: #168ddb;
+    font-weight: bold ; 	   border-bottom:1px solid #bbbbbb; }
+.client-inner {padding:25px 0;}
+
+.list-whypun { margin:0; padding:0; position:relative;}
+.list-whypun li { font-size:16px; list-style:none; padding:13px 0 0 32px; background:url(../images/li-bullet-mob.png) no-repeat left 12px;}
+.list-whypun li p {position:relative; margin-left:20px;     padding: 5px 0 0 5px;} 
+.dots-cir {
+    background: #565656;
+   border-radius: 100%;
+    float: left;
+    height: 8px;
+    left: -13px;
+    position: absolute;
+    top: 13px;
+    width:8px;
+}
+.green-form { background:#C00;}

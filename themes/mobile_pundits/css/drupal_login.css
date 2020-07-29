@@ -1,0 +1,73 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 8, 2016, 5:10:31 PM
+    Author     : Madhuri.Sharma
+*/
+#toolbar{
+    z-index:9999;
+}
+.login_page{
+    margin-top: 10%;
+}
+#auth_box {
+  font-family: sans-serif;
+  margin: 0 auto ;
+  margin-bottom: 100px;
+  padding: 50px 0 0;
+  width: 300px;
+}
+
+
+#auth_box h1#the_logo {
+    margin: 0;
+    padding: 0 0 25px;
+    text-align: center;
+}
+#auth_box h1#the_logo img {
+    max-width: 250px;
+}
+
+#auth_box #middle_part {
+    background: #fff none repeat scroll 0 0;
+    border-radius: 3px;
+    box-shadow: 0 0 3px 1px #ccc;
+    overflow: hidden;
+    padding: 15px;
+}
+
+#auth_box h2.title {
+    font-size: 2em;
+    margin: 0;
+    padding: 0 0 15px;
+}
+#auth_box input[type="text"], #auth_box input[type="password"] {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 15px;
+    padding: 5px;
+    width: 260px;
+}
+#auth_box input[type="text"], #auth_box input[type="password"] {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 15px;
+    padding: 5px;
+    width: 260px;
+}
+#auth_box .form-text {
+   padding: 1%;
+    width: 100%;
+}
+#auth_box .form-submit {
+    background-color: red;
+    color: #fff;
+    padding: 2%;
+    width: 100%;
+}
+#auth_box #edit-actions {
+    margin: 6%;
+}

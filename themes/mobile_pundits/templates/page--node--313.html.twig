@@ -1,0 +1,51 @@
+<div  class="popup"></div>
+<div  class="popup1"></div>
+ {% if page.header %}
+    <div id="header"> 
+        {{ page.header }} 
+    </div>
+ {% endif %}
+
+ <!--Header end-->
+
+<!--Full page start-->
+<div id="fullpage" class='slim_scroller'>
+    <div class="section section_div home-carousel clearfix" id="section0" >
+         {{ drupal_block('carousel_block') }}
+    </div>
+    <!--Section 0 slideshow end-->
+    
+    <!--Section1 Services start-->
+    <div class="section " id="section1">
+        <div class="container">
+          {{ drupal_block('service_block') }}
+        </div>
+    </div>
+    <!--Section1 Services start-->
+    <!---Section2 Start-->
+    <div class="section  " id="section2">
+        <div class="container-fluid partner-main">
+            <div class="container">
+                <div class="parnermain-div">
+                    <h4>Trusted development partner of Startups to Fortune 500 companies</h4>
+                    <div class="partner-div "> <img src="{{ base_path }}{{ active_theme_path() }}/images/partne-img.png" width="986" class="img-responsive partner-img"> <img src="{{ base_path }}{{ active_theme_path() }}/images/partne-img-mob.png"  class="partner-img-mob"> </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid client-main"> <!--change all section-->
+            <div class="container clients-div">  
+            {{ drupal_block('partner_carousel_block') }}
+                
+            </div>
+        </div>
+    </div>
+    <div class="section  purple-bg" id="section3">
+        {{ drupal_block('front_page_resources_block') }}
+    </div>
+    <div class="section  grey-bgaward" id="section4"> {{ drupal_block('front_page_award_block') }}
+    </div>
+ </div>
+
+{% if page.footer %}
+  {{ page.footer }} 
+ {% endif %}

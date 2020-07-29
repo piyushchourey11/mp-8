@@ -1,0 +1,14 @@
+content_custom_modules.test:
+  path: '/popup_model'
+  defaults:
+    _controller: '\Drupal\content_custom_modules\Controller\ContentCustomModulesController::sliderPopup'
+  requirements:
+    _permission: 'access content'
+content_custom_modules.pdfDownload:
+  path: '/download/pdf/{id}'
+  defaults:
+    _controller: '\Drupal\content_custom_modules\Controller\ContentCustomModulesController::loadWebform'
+  requirements:
+    _permission: 'access content'
+
+    

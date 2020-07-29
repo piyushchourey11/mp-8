@@ -1,0 +1,114 @@
+
+<div class="top-barmain clearfix">
+<div class="container-fluid">
+<div class="top-bar clearfix">
+<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 pull-left nopadding free-touch">
+<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 usericon-left">
+<span class="pull-left">
+		     <img src="{{ base_path }}{{ active_theme_path() }}/images/checklist-icon.png"  ></span> </div>
+                    <div class="col-md-9 col-lg-9  col-sm-9  col-xs-9 nopadding">
+                      <h3><span class="color-red"> 50 Points checklist</span> for creating a <span class="color-red">Mobile Application  </span> for the Enterprise </h3>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 nopadding talk-btn"><!--add  id of a button and add <a> on lets talk-->
+                      <a href="Checklist_For_Mobile_Application_Development.html"  ><button id="lets_talk_btn1" class="btn btn-success" type="button">Get Checklist</button></a>
+                    </div>
+					
+                  </div>
+                  <div class="col-lg-4 col-md-4  col-sm-12 col-xs-12  pull-right right-topbar">
+                    <div class="ph-sec clearfix ">
+                    <div class="nopadding ph "> <span id="contact_no">+1-732-654-9056</span></div>
+                    <div class="nopadding ph-no ">
+                         <div class="ph-dropdown">
+                          <span class="ph-circle">
+			<img src="{{ base_path }}{{ active_theme_path() }}/images/phone.svg" width="32" height="32" class="svg"> </span> 
+                            <select id="contact_list" class="  form-control selectpicker" >
+                             <option value="+1-732-654-9056">United States</option>
+                              <option value="+61-2-8015-5723">Australia</option>
+                              
+                                <option value="+33-7-68-79-77-46">France</option>                                
+                                <option value="+91-731-402-5351">India</option>
+                              </select>
+                           </div>
+                      </div>
+                     </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+          {# Topbarmain End #}
+
+
+
+
+<div class="container-fluid top-nav">
+<div class="navbar navbar-default" role="navigation">
+{# display logo for site #}
+<div class="navbar-header">
+<button type ="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" > <span class="sr-only">Toggle navigation </span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+<span class="navbar-brand">{{ drupal_entity('block','mobile_pundits_branding', check_access=false) }}</span> 
+</div>
+
+{# All menu and submenu items #}
+<div class="navbar-collapse collapse nopadding">
+
+{% import _self as menus %}
+      {#
+        We call a macro which calls itself to render the full tree.
+        @see http://twig.sensiolabs.org/doc/tags/macro.html
+      #}
+      {{ menus.menu_links(items, attributes, 0) }}
+      
+      {% macro menu_links(items, attributes, menu_level) %}
+        {% import _self as menus %}
+        {% if items %}
+          {% if menu_level == 0 %}
+            <ul class="nav navbar-nav  pull-right main-nav">
+          {% else %}
+          <div class="main-drop-menu   dropdown-menu" aria-labelledby="dropdownMenu">
+          <div class="row"> 
+          <div class="col-xs-7">
+            <div class="dropmenu-img">
+                <img src="http://d2ae6i1c2fz1s5.cloudfront.net/sites/default/files/Menu%20image%20directory/cloud_menu_0.jpg" title="{{ items.field_main_menu_image }}">
+            </div>
+          </div>
+          <div class="col-xs-5 no-padding">
+           <ul> 
+          {% endif %}
+          {% for item in items %}
+            {% if item.below %}
+              {% if menu_level == 0 %}
+                <li class="dropdown dropdown_main_menu">
+                  <a href="{{ item.url }}"  class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">{{ item.title }}</a>
+                  {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+                </li>
+              {% else %}
+                <li class="dropdown-submenu">
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+                  {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+                </li>
+              {% endif %}
+            {% else %}
+            
+        {% set menutitle = item.title %}
+        {% set newTitle=menutitle %}
+				{% set link_text %}{{ newTitle|raw }}{% endset %}
+        {% if menutitle=="Contact us1" %} 
+        <li class="cont-page"> <a  data-target="#contact_page_form" data-toggle="modal" href="#"  >{{menutitle}}</a>
+        {% else %} 
+        <li {{ item.attributes }}>{{ link( link_text, item.url) }}
+        {% endif %}
+        </li>
+				
+            {% endif %}
+          {% endfor %}
+          </ul>
+         {% if menu_level == 0 %}
+          {% else %}
+           </div></div></div>
+          {% endif %}
+         
+        {% endif %}
+      {% endmacro %}
+   </div>
+   </div>
+   </div>

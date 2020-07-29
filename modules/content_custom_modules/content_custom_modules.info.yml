@@ -1,0 +1,7 @@
+name: Content custom modules
+type: module
+description: An example module used to learn module development and forms creation.
+core: 8.x
+package: Custom
+dependencies:
+  - block
