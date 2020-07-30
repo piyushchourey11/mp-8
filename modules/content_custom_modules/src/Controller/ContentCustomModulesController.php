@@ -92,10 +92,10 @@ use Drupal\paragraphs\Entity\Paragraph;
                                                 <p> ' . $carousel_tpl_head[$counter] . ' </p>
                                               </div>
                                               <div class="tab-pdf-in">
-                                                  <img src="' . $theme_path . '/images/req/download_pdf_icon.png">
+                                                  <img src="' . \Drupal::theme()->getActiveTheme()->getPath() . '/images/req/download_pdf_icon.png">
                                               </div>
                                               <div class="  tab-pdf-out">
-                                                  <img src="' . $theme_path . '/images/req/download_pdf_icon_white.png">
+                                                  <img src="' . \Drupal::theme()->getActiveTheme()->getPath() . '/images/req/download_pdf_icon_white.png">
                                               </div>
                                               </a>';
                               }
@@ -343,7 +343,7 @@ use Drupal\paragraphs\Entity\Paragraph;
                                      <div class="get-form">';
                    //Render a webform whose id :"webform-client-form-99 succ Popup inner form"
                    //$block = module_invoke('webform', 'block_view', 'webform-client-form-99');//99
-                   $return .=drupal_render($this->loadWebform());
+                   $return .=drupal_render($this->loadWebform('popup_contact_form'));
                    $return .='</div>
                             </div>
                               <span id="pdf_error" style="display: none"> Please fill the form.</span>
@@ -392,9 +392,10 @@ use Drupal\paragraphs\Entity\Paragraph;
         }
       }
     
-      public function loadWebform($webFormID="popup_contact_form"){
-          if($webFormID!=""){ 
+      public function loadWebform($webFormID){
+        if($webFormID!=""){ 
           $my_form = \Drupal\webform\Entity\Webform::load($webFormID);
+          //print_r($my_form); die;
           //$webform = \Drupal::entityTypeManager()->getStorage('webform')->load($webFormID);
           //$elements = $webform->getElementsDecodedAndFlattened();
           return $output = \Drupal::entityManager()
@@ -418,5 +419,9 @@ use Drupal\paragraphs\Entity\Paragraph;
           // return $html;
          
         }
+      }
+
+      public function resources(){
+        echo "hello"; die;
       }
 }

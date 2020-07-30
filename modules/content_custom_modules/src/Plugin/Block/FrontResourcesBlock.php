@@ -23,7 +23,8 @@ class FrontResourcesBlock extends BlockBase {
    * {@inheritdoc}
    */
   /**front page resources block */
-  public function build() { 
+  public function build() {
+
     $ContentCustomControllerRef = new ContentCustomModulesController;
     global  $theme_path;
     global $base_url;
@@ -32,28 +33,69 @@ class FrontResourcesBlock extends BlockBase {
     $tid_array=array();
     $choose_tpl=array();
     $carousel_name_class=array();
-    
+        
+    /*Query, to get textnomy list in which having vid or machine name tabs*/
+
+    $query = \Drupal::entityQuery('taxonomy_term');
+    $query->condition('vid', 'tabs')
+          ->sort('weight');
+    $tids = $query->execute();
+    $terms = Term::loadMultiple($tids);
+    $count=0;
+    foreach ($terms as $term) {
+         $tid_array[$count] = $term->get('tid')->getString();
+         $choose_tpl[$count] = $term->get('name')->getString();
+         $carousel_name_class[$count] = $term->get('field_tab_class_name')->getString();
+
+        $count++;
+    }
+
+    /* This configuaration isPage variable is used to make diffrent html using same FrontResourcesBlock method */
+
+        if($this->configuration['isPage']=="resources"){
+            $html.='<div class="resource-main"><div class="container-fluid grey-bg">';
+            $count=0;
+            while($count < sizeof($tid_array)){
+                $array=$this->getNodesByTaxonomyTermIds($tid_array[$count]);
+                $j=0;
+                $html.='<div class="container res-main m2m_scroll " id='.$choose_tpl[$count].' >
+             <div class="row">
+               <div class="res-tem" >
+                   <!--Carousel block start   res-tem-in -->
+                       <div class="'.$carousel_name_class[$count].' res-box-style clearfix ">
+                           <div class=" col-sm-3  col-md-2 col-xs-12 no-padding" >
+                             <div class="res-box " >
+                               <h1 class="head-res-main">'.$choose_tpl[$count].'</h1>
+                             </div>
+                           </div>
+                           <div class="tab-content col-md-10   col-sm-8 col-xs-11 pull-right">
+                               <div id="templates'.$count.'" class=" tab-res tab-pane active" role="tabpanel">
+                                   <div class="tabcontent-inner1 ">
+                                      <div id="demo'.$count.'" >
+                                       <div class="owl-carousel tab-carousel owl-theme carousel_class" id="carousel'.$count.'" style="opacity: 1; display: block;">';
+                 $html.= $ContentCustomControllerRef->resouces_block_content_method($array,$tid_array,$count);//4-5-16
+        $html .='</div>
+                                 </div>
+                               </div>
+                             </div>
+                         </div>
+                       </div>
+                       </div>
+                   <!--Carousel block end-->
+               </div>
+               </div>';
+                    $count++; 
+         }
+
+         $html .='</div></div></div>';
+        }else{
         $html.='<div class="container-fluid resourcesmain-div">
             <div class="container">
             <div class="row">
             <div class="col-md-12 resource">
             <h1>Resources you can use</h1>
             <br>';
-           /*Query, to get textnomy list in which having vid or machine name tabs*/
-
-            $query = \Drupal::entityQuery('taxonomy_term');
-            $query->condition('vid', 'tabs')
-                  ->sort('weight');
-            $tids = $query->execute();
-            $terms = Term::loadMultiple($tids);
-            $count=0;
-        foreach ($terms as $term) {
-             $tid_array[$count] = $term->get('tid')->getString();
-             $choose_tpl[$count] = $term->get('name')->getString();
-             $carousel_name_class[$count] = $term->get('field_tab_class_name')->getString();
-
-            $count++;
-        }
+           
     
         $count=0;
         $html.='<ul class="nav nav-tabs resource-tabs" role="tablist">';
@@ -95,6 +137,8 @@ class FrontResourcesBlock extends BlockBase {
         }   
         $html.=' <a href="'.$base_url.'/success_story"><button id="succ_view_btn" class="btn btn-danger" ">View More</button></a>
             </div></div></div></div></div>';      
+        }
+
         return [
         '#markup' => Markup::create($html),
       ];

@@ -5,8 +5,17 @@
 */
 function mobile_pundits_preprocess(&$variables) {
 	if ($node = \Drupal::request()->attributes->get('node')) {
+        $content_type = $node->bundle();
+        //$variables['attributes']['class'][] = 'page--'.$content_type;
         $variables['attributes']['class'][] = 'page-node-' . $node->id();
       }
+}
+function mobile_pundits_theme_suggestions_page_alter(array &$suggestions, array $variables) {
+  if ($node = \Drupal::routeMatch()->getParameter('node')) {
+    $content_type = $node->bundle();
+    $suggestions[] = 'page-node-' . $node->id();
+    $suggestions[] = 'page__'.$content_type;
+  }
 }
 
 function mobile_pundits_js_settings_alter(array &$settings,
@@ -17,7 +26,9 @@ function mobile_pundits_js_settings_alter(array &$settings,
     //   'baseUrl' => $base_url
     // ];
     $settings['basePath'] =  $base_url;
+    $settings['theme_path'] =  \Drupal::theme()->getActiveTheme()->getPath();
  }
+
 
 function mobile_pundits_preprocess_block(&$variables){
   if(isset($variables['attributes']['id'])){

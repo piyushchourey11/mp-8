@@ -1,0 +1,13 @@
+<div  class="popup"></div>
+<div  class="popup1"></div>
+ {% if page.header %}
+    <div id="header"> 
+        {{ page.header }} 
+    </div>
+ {% endif %}
+
+ <!--Header end-->
+
+<!--Full page start-->
+{{ drupal_block('inner_carousel_block') }}
+{{ drupal_block('front_page_resources_block',{isPage: 'resources'}) }}

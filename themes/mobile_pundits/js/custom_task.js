@@ -148,7 +148,7 @@ $(document).ready(function () {
         $("#back_bg_popup").show();
         $("#back_bg_car").show();
         $.ajax({type: "POST",
-            url: drupalSettings.basePath + 'popup_model',
+            url: drupalSettings.basePath + '/popup_model',
             data: {id: id},
             success: function (result) {
                 if (result.html !== "") {
@@ -185,14 +185,14 @@ $(document).ready(function () {
         var id = $(this).attr("value");
         e.preventDefault();
         $.ajax({type: "POST",
-            url: drupalSettings.basePath + 'popup_model',
+            url: drupalSettings.basePath + '/popup_model',
             data: {id: id},
-            success: function (result) {
-                if (result !== "") {
-                    $(".popup").html(result).find(".selectpicker").selectpicker({liveSearch: true});
+            success: function (result) { 
+                if (result.html !== "") {
+                    $(".popup").html(result.html).find(".selectpicker").selectpicker({liveSearch: true});
                     $('#pop_talkmsg').hide();
                     $("#webform-client-form-99 ").show();
-                    $(".pdf_dwn").click(function (event) {//PDF DOWNLOAD 
+                    $(".pdf_dwn").on('click',function(event){ 
                         event.preventDefault();//PDF DOWNLOAD 
                         var pdf_id = ($(this).attr("href")).split("/").pop();
                         window.location.assign("downloads/pdf/" + pdf_id);

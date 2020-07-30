@@ -7,7 +7,7 @@ content_custom_modules.test:
 content_custom_modules.pdfDownload:
   path: '/download/pdf/{id}'
   defaults:
-    _controller: '\Drupal\content_custom_modules\Controller\ContentCustomModulesController::loadWebform'
+    _controller: '\Drupal\content_custom_modules\Controller\ContentCustomModulesController::downloadPdf'
   requirements:
     _permission: 'access content'
 

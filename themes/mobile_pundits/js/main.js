@@ -11,7 +11,8 @@ function initFullPageJs() {
         navigationPosition: 'right',
         responsive: 900,
         slideSelector: '.insta-con-touch',
-        paddingTop: $("#fullpage").hasClass("inner-page-class") ? '148px ' : '110px',
+        //paddingTop: $("#fullpage").hasClass("inner-page-class") ? '148px ' : '110px',
+        paddingTop: $("#fullpage").hasClass("inner-page-class") ? '100px ' : '80px',
         normalScrollElements: '.modal ,dropdown-menu open',
         setKeyboardScrolling: false
     });
@@ -75,7 +76,7 @@ $(document).ready(function () {
                 $('html,body').css('overflow', '');
                 $("#myCarousel-inner").addClass("innerpage-slide2");
                 if (!$("div").hasClass("top-sub-menu")) {
-                    $(".innerpage-slide2").css("padding-top", "120px"); //add padding margin //14-4-16
+                    $(".innerpage-slide2").css("padding-top", "100px"); //add padding margin //14-4-16
                 }
             }
             if (($('div').hasClass('slim_scroller'))) {
