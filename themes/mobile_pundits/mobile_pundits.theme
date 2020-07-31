@@ -40,6 +40,33 @@ function mobile_pundits_preprocess_block(&$variables){
     }
 }
 
+function mobile_pundits_preprocess_menu(&$variables, $hook) { 
+  if($variables['theme_hook_original'] == 'menu__main'){ 
+  $items = $variables['items'];
+    foreach ($items as $key => $item) { 
+    if(count($item['below'])>0)
+    {
+      foreach($item['below'] as $id=>$array)
+      {
+        $entity = \Drupal::entityTypeManager()->getStorage('menu_link_content')->loadByProperties(array('uuid'=>$item['original_link']->getDerivativeId()));
+        foreach($entity as $idMenu)
+        {
+          if($idMenu->get('field_main_menu_image')->entity != null) {
+            $image = file_create_url($idMenu->get('field_main_menu_image')->entity->getFileUri());
+            if($image)
+              $items[$key]['field_main_menu_image'] = $image;
+            }
+          if($idMenu->get('field_menu_class')->getValue() != null) {
+            $field_menu_class = $idMenu->get('field_menu_class')->getValue();
+            $items[$key]['attributes']['class'] = array_merge(($item[$key]['attributes']['class'] != null)? $item[$key]['attributes']['class']:array(), array($field_menu_class[0]['value']));
+            }
+        }
+      }
+    }
+  }
+    $variables['items']=$items;
+  }
+}
 
 //For add class on webform :-hook_form_alter() help to add custom class and id on form and form button
 // function mobile_pundits_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {

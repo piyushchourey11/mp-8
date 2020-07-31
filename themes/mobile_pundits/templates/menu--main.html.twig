@@ -5,14 +5,14 @@
 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 pull-left nopadding free-touch">
 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 usericon-left">
 <span class="pull-left">
-		     <img src="{{ base_path }}{{ active_theme_path() }}/images/checklist-icon.png"  ></span> </div>
+         <img src="{{ base_path }}{{ active_theme_path() }}/images/checklist-icon.png"  ></span> </div>
                     <div class="col-md-9 col-lg-9  col-sm-9  col-xs-9 nopadding">
                       <h3><span class="color-red"> 50 Points checklist</span> for creating a <span class="color-red">Mobile Application  </span> for the Enterprise </h3>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 nopadding talk-btn"><!--add  id of a button and add <a> on lets talk-->
                       <a href="Checklist_For_Mobile_Application_Development.html"  ><button id="lets_talk_btn1" class="btn btn-success" type="button">Get Checklist</button></a>
                     </div>
-					
+          
                   </div>
                   <div class="col-lg-4 col-md-4  col-sm-12 col-xs-12  pull-right right-topbar">
                     <div class="ph-sec clearfix ">
@@ -20,7 +20,7 @@
                     <div class="nopadding ph-no ">
                          <div class="ph-dropdown">
                           <span class="ph-circle">
-			<img src="{{ base_path }}{{ active_theme_path() }}/images/phone.svg" width="32" height="32" class="svg"> </span> 
+      <img src="{{ base_path }}{{ active_theme_path() }}/images/phone.svg" width="32" height="32" class="svg"> </span> 
                             <select id="contact_list" class="  form-control selectpicker" >
                              <option value="+1-732-654-9056">United States</option>
                               <option value="+61-2-8015-5723">Australia</option>
@@ -40,7 +40,7 @@
 
 
 
-<div class="container-fluid top-nav">
+<div {{ attributes.addClass('container-fluid', 'top-nav') }}>
 <div class="navbar navbar-default" role="navigation">
 {# display logo for site #}
 <div class="navbar-header">
@@ -50,7 +50,6 @@
 
 {# All menu and submenu items #}
 <div class="navbar-collapse collapse nopadding">
-
 {% import _self as menus %}
       {#
         We call a macro which calls itself to render the full tree.
@@ -64,26 +63,56 @@
           {% if menu_level == 0 %}
             <ul class="nav navbar-nav  pull-right main-nav">
           {% else %}
-          <div class="main-drop-menu   dropdown-menu" aria-labelledby="dropdownMenu">
-          <div class="row"> 
-          <div class="col-xs-7">
-            <div class="dropmenu-img">
-                <img src="http://d2ae6i1c2fz1s5.cloudfront.net/sites/default/files/Menu%20image%20directory/cloud_menu_0.jpg" title="{{ items.field_main_menu_image }}">
-            </div>
-          </div>
+          
+          
           <div class="col-xs-5 no-padding">
            <ul> 
           {% endif %}
           {% for item in items %}
             {% if item.below %}
               {% if menu_level == 0 %}
-                <li class="dropdown dropdown_main_menu">
-                  <a href="{{ item.url }}"  class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">{{ item.title }} <span class="caret"></span></a>
-                  {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+        
+                <li class="dropdown dropdown_main_menu {{item.in_active_trail ? 'active' : ''}}"> 
+                  <a href="{{ item.url }}"  class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"> {{ item.title }}
+          {% if item.below %}
+          <span class="caret"></span>
+          {% endif %}
+          </a>
+                <div {{ item.attributes.addClass('dropdown-menu', 'main-drop-menu') }} aria-labelledby="dropdownMenu"> 
+        <div class="row"> 
+          <div class="{{item.below|length>6 ? 'col-xs-4' : 'col-xs-7'}}">
+          <div class="dropmenu-img">
+          {{items.attributes}}  
+         
+            <img src="{{item.field_main_menu_image}}" title="{{ item.field_main_menu_image }}">
+          
+          </div>
+          </div>
+          <div class="{{item.below|length>6 ? 'col-xs-8' : 'col-xs-5'}} no-padding">
+          {% if item.below|length  %}
+          {% set itemPerColumn = 6 %}
+
+          {% for itemsub in item.below %}
+
+            {% if itemPerColumn == 1 or loop.index % itemPerColumn == 1 %}
+                <ul>
+            {% endif %}
+
+                <li class="{{itemsub.in_active_trail ? 'active' : ''}}"><a class="dropdown_list_values" href="{{itemsub.url}}">{{itemsub.title}}</a></li>
+
+            {% if loop.last or loop.index % itemPerColumn == 0 %}
+                </ul>
+            {% endif %}
+
+          {% endfor %}
+        {% endif %}
+          </div> 
+          </div>
+          </div>
                 </li>
               {% else %}
                 <li class="dropdown-submenu">
-                  <a href="{{ item.url }}">{{ item.title }} <span class="caret"></span></a>
+                  <a href="{{ item.url }}">{{ item.title }}</a>  
                   {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
                 </li>
               {% endif %}
@@ -91,20 +120,36 @@
             
         {% set menutitle = item.title %}
         {% set newTitle=menutitle %}
-				{% set link_text %}{{ newTitle|raw }}{% endset %}
+        {% set link_text %}{{ newTitle|raw }}{% endset %}
         {% if menutitle=="Contact us1" %} 
         <li class="cont-page"> <a  data-target="#contact_page_form" data-toggle="modal" href="#"  >{{menutitle}}</a>
         {% else %} 
-        <li {{ item.attributes }}>{{ link( link_text, item.url) }}
+        <li class="{{item.in_active_trail ? 'active' : ''}}">{{ link( link_text, item.url) }}
         {% endif %}
         </li>
-				
+        
             {% endif %}
           {% endfor %}
           </ul>
          {% if menu_level == 0 %}
+              
+         
+         <div class="top-sub-menu" style="height: auto;">
+          <ul>
+          {% for item in items %}
+          {% if item.in_active_trail %}
+          {% if item.below %}
+            {% for itemsub in item.below %}           
+              <li class="{{itemsub.in_active_trail ? 'active' : ''}}"><a href="{{itemsub.url}}">{{itemsub.title}}</a></li>
+            {% endfor %}
+          {% endif %}
+          {% endif %}
+          {% endfor %}
+          </ul>
+        </div>  
+         
           {% else %}
-           </div></div></div>
+           </div>
           {% endif %}
          
         {% endif %}

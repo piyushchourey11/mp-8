@@ -421,7 +421,84 @@ use Drupal\paragraphs\Entity\Paragraph;
         }
       }
 
-      public function resources(){
-        echo "hello"; die;
+      public function side_popup_html(){
+        global $theme_path;
+        $html .='<div class="slide-popup ">
+                      <button onclick="" class="bannerbutton">X</button>
+                        <a href="iot-cloud"> <img src="' . $theme_path . '/images/find-out.png"></a>
+                      </div>';
+        return $html;             
+      }
+      /* Related resource html content */
+      public function getHtmlSection(){
+        global $theme_path, $baseUrl;
+        $html .='<div class="related-resources ">
+                   <div class="container">
+                    <h2 class="inner-page-head text-center">Related Resources</h2>
+                    <div class="box clearfix">
+                     <div class="col-md-4 col-xs-12 col-sm-4">
+                       <h1>Templates</h1>
+                       
+                      <div class="tabscontet-border ">
+                      <a class="templates " href="' . $baseUrl . '/sites/default/files/user_story.pdf">
+                       <div class="tab-box1 nopadding">
+                        <h6>What are User Stories and Why developers need them ?</h6>
+                        <p>Developers need to understand the exact customer requirements or challenges that are faced by actual users of the application being developed.</p>
+                        <span class="pull-right cloud_icon"></span>
+                        </div>
+                        </a>
+                        <a href="resources#Templates"  class="view_all">View All</a>
+                      </div>
+                     </div>
+                     
+                     <div class="col-md-4 col-xs-12 col-sm-4">
+                     <h1>Insights</h1>
+                      <div class="tabscontet-border ">
+                       <div class="chek-img-sec">
+                       <a class="insights-imgs" data-toggle="lightbox" href="'. $theme_path . '/images/infographics.jpg"> 
+                        <div class="curo-img-in">
+                        <img src="sites/default/files/Pdf%20screenshot%20images/5-x.png">
+                        </div>
+                        <div class="text-check">
+                         <p> The State of App Downloads and Monetization  </p>
+                         <span class="pull-right cloud_icon"></span>
+                        </div>
+                        
+                        </a>
+                       </div>
+                       <a href="resources#Insights"  class="view_all">View All</a>
+                      </div>
+                     </div>
+
+                     <div class="col-md-4 col-xs-12 col-sm-4">
+                     <h1>Success Stories</h1>
+                     <div class="tabscontet-border ">
+                      <div class="chek-img-sec">
+                     
+                      <a  class="popup_pdf_link success-story  " value="98" href="#">
+                      <a id="pdf_popup" class="popup_pdf_link success-story success-story-inner " value="98" href="#" 0="">
+                        <div class="curo-img-in"> 
+                      
+                          <img src="sites/default/files/Pdf%20screenshot%20images/boingo-x.jpg"> 
+                        </div>
+                        <div class="text-check">
+                         <p> Offering Unified Omni-Channel Solution for Capturing Customer Experience </p>
+                        </div>
+                        
+                          <div class="tab-pdf-in">
+                           <img src="' . \Drupal::theme()->getActiveTheme()->getPath() . '/images/req/download_pdf_icon.png">
+                          </div>
+                          <div class="tab-pdf-out">
+                              <img src="' . \Drupal::theme()->getActiveTheme()->getPath() . '/images/req/download_pdf_icon_white.png">
+                          </div>
+                      </a>
+                       </div>
+                       <a href="success-stories " class="view_all">View All</a>
+                      </div>
+                     </div>
+                    </div>
+                   </div>
+                  </div>';
+        return $html;             
       }
 }

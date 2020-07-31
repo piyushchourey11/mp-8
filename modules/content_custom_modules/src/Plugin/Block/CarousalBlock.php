@@ -90,9 +90,21 @@ class CarousalBlock extends BlockBase {
                     $carousel_id = str_replace(' ', '_',$nodeItem->field_select_pdf_popup_page->target_id);
                   
                     //desktop image
-                    $path = file_create_url($nodeItem->field_carousel_image->entity->getFileUri());
+                    if($nodeItem->hasField('field_carousel_image') && !$nodeItem->get('field_carousel_image')->isEmpty())
+                      $path = file_create_url($nodeItem->field_carousel_image->entity->getFileUri());
+                    else
+                      $path="";
+
                     //small device image
-                    $touch_img_path=file_create_url($nodeItem->field_carousel_image_for_touch_d->entity->getFileUri());
+                    if($nodeItem->hasField('field_carousel_image_for_touch_d') && !$nodeItem->get('field_carousel_image_for_touch_d')->isEmpty())
+                      $touch_img_path = file_create_url($nodeItem->field_carousel_image_for_touch_d->entity->getFileUri());
+                    else
+                      $touch_img_path="";
+
+
+                    // $path = file_create_url($nodeItem->field_carousel_image->entity->getFileUri());
+                    
+                    // $touch_img_path=file_create_url($nodeItem->field_carousel_image_for_touch_d->entity->getFileUri());
                     
                     //homepage banner img
                     if($nodeItem->hasField('field_home_page_banner_image') && !$nodeItem->get('field_home_page_banner_image')->isEmpty())

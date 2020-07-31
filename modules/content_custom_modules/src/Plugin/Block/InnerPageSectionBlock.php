@@ -65,12 +65,11 @@ class InnerPageSectionBlock extends BlockBase {
           ->condition('type', 'SectionContentType')
           ->condition('field_section_category_page_list', $pageId);
     $result = $query->execute(); //node id array
-
+    //print_r($result); die;
     $nodes = Node::loadMultiple($result);  //Load all the nodes or fieldvalues  of a nodes
     // echo "<pre>"; print_r($nodes); die;
     if (count($nodes) > 0) {
         foreach ($nodes as $nodeItemData) {
-
           if($nodeItemData->hasField('field_section_image') && !$nodeItemData->get('field_section_image')->isEmpty())
               $path = file_create_url($nodeItemData->field_section_image->entity->getFileUri());
           else
@@ -148,8 +147,8 @@ class InnerPageSectionBlock extends BlockBase {
                       break;
                   case "Horizontal_tab_view":
                   case "Verticle_tab_view": 
-                      //print_r($nodeItemData); die;
-                      $return .=$this->verticle_tab_view();
+                        $nodeId = $nodeItemData->get('nid')->value;
+                      $return .=$this->verticle_tab_view($nodeId,$Select_template,$selected_scroller,$section_class,$section_subhead);
                       break;
             }
           }
@@ -483,8 +482,196 @@ public function list_view( $body, $body_head,$path,$content_form,$selected_scrol
         return $return;
 }
 
-public function verticle_tab_view(){
+public function verticle_tab_view($nodeId,$Select_template,$selected_scroller,$section_class,$section_subhead){
+  $nodeData = Node::load($nodeId);
+  //get multiple paragraph data of tab view of IOT & wearable page...
+  if ($paragraph_field_items = $nodeData->get('field_tab_view')->getValue()) {
+    // Get storage. It very useful for loading a small number of objects.
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    // Collect paragraph field's ids.
+    $ids = array_column($paragraph_field_items, 'target_id');
+    // Load all paragraph objects.
+    $paragraphs_objects = $paragraph_storage->loadMultiple($ids);
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $i =0;
+    foreach ($paragraphs_objects as $paragraph) {
+      // Get field from the paragraph.
+      if($paragraph->get('field_tab_head')->getValue())
+        $tab_head[$i] = $paragraph->get('field_tab_head')->getValue()[0]['value'];
+      else
+        $tab_head[$i] = "";
+      
+      if($paragraph->get('field_tab_body_head')->getValue())
+        $tab_body_head[$i] = $paragraph->get('field_tab_body_head')->getValue()[0]['value'];
+      else
+      $tab_body_head[$i] = "";
 
+      if($paragraph->get('field_tab_body_contents')->getValue())
+        $body_content[$i] = $paragraph->get('field_tab_body_contents')->getValue()[0]['value'];
+      else
+      $body_content[$i] = "";
+
+      if($paragraph->get('field_tab_body_image')->getValue())
+        $h_body_image[$i] = file_create_url($paragraph->get('field_tab_body_image')->getValue()[0]['value']);
+      else
+      $h_body_image[$i] = "";
+      $i++;
+    }
+
+    if(sizeof($tab_head)>0 || sizeof($tab_body_head)>0 || sizeof($body_content)>0){
+        if($Select_template=="Horizontal_tab_view"){
+            $return .=$this->horizontal_tab_view_structure($tab_head,$h_body_image,$body_content,$selected_scroller,$section_class,$tab_id);
+        }
+        if($Select_template=="Verticle_tab_view"){
+            $return .=$this->verticle_tab_view_structure($tab_head,$tab_body_head,$body_content,$section_subhead,$selected_scroller,$section_class);  
+        }
+         unset($tab_head);
+         unset($tab_body_head);
+         unset($body_content);
+    }
+  }
+  return $return;
+}
+
+ /*************************************************************************
+     * Method Name      : horizontal_tab_view_structure          Callback function for horizontal_tab_view1
+     * Local variable   : $tab_head                     Tab head of a section body
+     * Local variable   : $tab_body_content             Content inside particular tab.
+     * Local variable   : $tab_id                       id on a tab.
+     * Local variable   : $selected_scroller            Scroller value (Simple scroller or Slim scroller)
+     * Local variable   : $section_class                Class apply on a particular section.
+     * @return          :  $return                      Return string
+     ************************************************************************/
+public function horizontal_tab_view_structure($tab_head,$path,$tab_body_content,$selected_scroller,$section_class,$tab_id){
+            $tab_index =0;
+            $return="";
+            if($selected_scroller=="Slim scroller"){
+               $return .='</div>';  
+             } 
+            $return .='<div  class="'.$section_class.'  grey-bg">
+             <div class="container-fluid ">
+               <div class="container ">
+                 <div class="col-md-12 col-xs-12 text-left horizontal_content mtbres">
+                    <ul class="nav nav-tabs tabsdev responsive" id="myTab'.$tab_id.'">';
+             foreach ($tab_head as $tab_node)//Create tab link or tab view
+                {//Section body head
+                 if($tab_index==0){
+                         $return .='<li class="test-class first_tab  ">';       
+                 }
+                 else{
+                  $return .='<li class="test-class   ">';  
+                 }
+                    $return .='<a class="deco-none misc-class " href="#lot'.$tab_index.'">'.$tab_head[$tab_index].'</a></li>';
+                     $tab_index++;
+                }
+                $return .='</ul>'; 
+                $tab_index1 = 0;
+                $return .='<div class="tab-content responsive tabdev-opsinner clearfix  ">';
+                while($tab_index1 < $tab_index)//Craete div to render
+                {
+                    if($tab_index1==0){
+                        $return .='<div class="tab-pane    " id="lot'.$tab_index1.'">';
+                    }
+                    else{
+                        $return .='<div class="tab-pane  " id="lot'.$tab_index1.'">';
+                    }
+                    $return .='<div class="col-md-6"> 
+                                <ul class="inner-list tabindev tabsdev">
+                                     '.$tab_body_content[$tab_index1].'
+                                </ul>
+                               </div>
+                                <div class="col-md-6  pad-t-btab">
+                                     <img src="'.$path[$tab_index1].'" class="img-responsive">
+                                </div>
+                               </div>'; 
+                    $tab_index1++; 
+                }
+                $return .='</div>';  
+                $counter=0;
+  $return .='</div></div></div>';
+                  if($selected_scroller=="Simple scroller"){
+                       $return .='</div>';
+                  }
+       return $return;
+  }
+/*************************************************************************
+     * Method Name      : verticle_tab_view_structure           Callback function for verticle_tab_view1
+     * Local variable   : $tab_head                     Tab head of a section body
+     * Local variable   : $tab_body_content             Content inside particular tab.
+     * Local variable   : $tab_id                       id on a tab.
+     * Local variable   : $selected_scroller            Scroller value (Simple scroller or Slim scroller)
+     * Local variable   : $section_class                Class apply on a particular section.
+     * @return          :  $return                      Return string
+     ************************************************************************/ 
+public function verticle_tab_view_structure($tab_head,$tab_body_head,$tab_body_content,$section_sub_head,$selected_scroller,$section_class){
+            $return ='';
+            $tab_index =0;
+            if($selected_scroller=="Slim scroller"){
+               $return .='</div>';
+             }
+            $return .='<div class="'.$section_class.'">
+           <div class="container ">
+              <div class="row ">
+              <div class=" "> <!--tabs-innerres-->
+                <div class="col-md-12">
+                  <div class="inner-section">
+                   <h2 class=" head-sub-se m-b-30" >'.$section_sub_head.'</h2>
+                  <!-- tabs left -->
+                  <div class="tabbable1 content-tab clearfix tabs-left">
+                    <ul class="nav nav-tabs responsive tabs-horizantical ">';
+                    foreach ($tab_head as $tab_node)//Create tab link or tab view
+                    {//Section body head
+                        if($tab_index == 0){
+                            $return .='<li class="first_tab">';
+                        }
+                        else{
+                            $return .='<li>';
+                        }
+                            $return .='<a href="#tab'.$tab_index.'" data-toggle="tab">'.$tab_head[$tab_index].'</a></li>';
+                            $tab_index++;
+                    }
+                    $return .='</ul>';
+                    $tab_index1 = 0;
+                    $return .='<div class="tab-content mob-stra-tab col-md-7 col-sm-6 col-lg-8 col-xs-12" >';//col-xs-12 20-4-16
+                    while($tab_index1<$tab_index)//Craete div to render
+                   {
+                       $return .='<div class="tab-pane  tab-panel-inner  font-size-p" id="tab'.$tab_index1.'">';  
+                       if($tab_body_head[$tab_index1]!= ""){
+                          $return .='<h3 >'.$tab_body_head[$tab_index1].'</h3>';
+                       }
+                              $return .='  '.$tab_body_content[$tab_index1].'</div>';
+                         $tab_index1++;
+                    }  
+                    $return .='</div>
+                        <!-- /tabs --> 
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  </div>';
+                   if($selected_scroller=="Simple scroller"){
+                         $return .='</div>';
+                    }
+        return $return;  
+}
+/*************************************************************************
+     * Method Name      : design_view           Callback function for verticle_tab_view1
+************************************************************************/ 
+public function design_view(  $body,$selected_scroller ,$section_class) {
+        $return ="";
+        if($selected_scroller=="Slim scroller"){
+           $return .='</div>';  
+         }
+        $return .='<div class=" '.$section_class.'">
+            <div class="cont-sec">
+            '.$body.'
+            </div>
+          </div>';
+        if($selected_scroller=="Simple scroller"){
+               $return .='</div>';
+         }
+    return $return;
 }
 
 }

@@ -22,6 +22,7 @@ class InnerCarousalBlock extends BlockBase {
    */
   /**front page inner carousal block */
   public function build() { 
+        $ContentCustomControllerRef = new ContentCustomModulesController;  //create controller reference object..
         $NodeObj =\Drupal::routeMatch()->getParameter('node');
         $NodeId = $NodeObj->id();
         $nodesInnerCarouselData = Node::load($NodeId);
@@ -71,9 +72,14 @@ class InnerCarousalBlock extends BlockBase {
       else
         $banner_class="";
 
+    if($nodesInnerCarouselData->hasField('field_sub_footer_section') && !$nodesInnerCarouselData->get('field_sub_footer_section')->isEmpty())
+        $sub_foot_active = $nodesInnerCarouselData->field_sub_footer_section->getString();
+      else
+        $sub_foot_active="";
+
         //Create html for banner image...
         if($selected_scroller=="Simple scroller"){
-            $html .='<div class=" inner-page-class fullpage-wrapper simple_scroller resource-main">';
+            $html .='<div class=" inner-page-class fullpage-wrapper simple_scroller '.$banner_class.'">';
         }else {
             $html .='<div id="fullpage" class=" inner-page-class  slim_scroller">'; //fullpage-wrapper
         }
@@ -107,6 +113,16 @@ class InnerCarousalBlock extends BlockBase {
         }
         //$html .="</div>";
         $html .=$this->InheritOtherBlockMethod("inner_page_section_block",$category_page1,$selected_scroller);
+        
+        /* Side poup implement for particular condition */
+        if ($selected_scroller == "Simple scroller" && $side_popup == "Yes") {
+             $html .=$ContentCustomControllerRef->side_popup_html();
+        }
+        /* Related resources section structure for based on following condition  */
+        if ($selected_scroller == "Simple scroller" && $sub_foot_active == "Yes") {
+             $html .=$ContentCustomControllerRef->getHtmlSection();
+        }
+
 
     return [
       '#markup' => Markup::create($html),
