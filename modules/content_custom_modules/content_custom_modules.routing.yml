@@ -10,5 +10,11 @@ content_custom_modules.pdfDownload:
     _controller: '\Drupal\content_custom_modules\Controller\ContentCustomModulesController::downloadPdf'
   requirements:
     _permission: 'access content'
+content_custom_modules.cross_site_form:
+  path: '/cross_site_form'
+  defaults:
+    _controller: '\Drupal\content_custom_modules\Controller\ContentCustomModulesController::cross_site_form'
+  requirements:
+    _permission: 'access content'
 
     

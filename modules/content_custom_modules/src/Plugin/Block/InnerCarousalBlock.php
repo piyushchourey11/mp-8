@@ -23,6 +23,8 @@ class InnerCarousalBlock extends BlockBase {
   /**front page inner carousal block */
   public function build() { 
         $ContentCustomControllerRef = new ContentCustomModulesController;  //create controller reference object..
+        $count = 0;
+
         $NodeObj =\Drupal::routeMatch()->getParameter('node');
         $NodeId = $NodeObj->id();
         $nodesInnerCarouselData = Node::load($NodeId);
@@ -77,20 +79,33 @@ class InnerCarousalBlock extends BlockBase {
       else
         $sub_foot_active="";
 
+    /*Related success stories slider..."Related with #section-3 below" */
+    while ($count < $total_carousel_size) { //get total success story on a page
+        if($nodesInnerCarouselData->hasField('field_add_carousel_') && !$nodesInnerCarouselData->get('field_add_carousel_')->isEmpty()){
+           
+                $carousels[$count] = $nodesInnerCarouselData->field_add_carousel_[$count]->target_id;
+                if($count<5){//get array of banners display on a page
+                    $caousels_id[$count]= $nodesInnerCarouselData->field_add_carousel_[$count]->target_id;
+                }
+                $count++;
+            }
+    }
+    
+
         //Create html for banner image...
         if($selected_scroller=="Simple scroller"){
             $html .='<div class=" inner-page-class fullpage-wrapper simple_scroller '.$banner_class.'">';
         }else {
             $html .='<div id="fullpage" class=" inner-page-class  slim_scroller">'; //fullpage-wrapper
         }
-        
+
         if ($Carousel_active == 'Yes') {
             if ($selected_scroller == "Simple scroller") {
                 $html .=' <div class="section  clearfix"  >';
             } else {
                 $html .=' <div class="section  clearfix" id="section0" >';
             }
-            $html .=$this->InheritOtherBlockMethod("carousel_block");
+            $html .=$this->InheritOtherBlockMethod("carousel_block");   
             //Render partner carousel by using partner region
             if ($partner_car == "Yes") {
                 $html .= '<div class="container  clients-div " >';
@@ -111,6 +126,7 @@ class InnerCarousalBlock extends BlockBase {
         if($selected_scroller=="Simple scroller"){
             $html .= '</div>';  
         }
+
         //$html .="</div>";
         $html .=$this->InheritOtherBlockMethod("inner_page_section_block",$category_page1,$selected_scroller);
         
@@ -122,7 +138,11 @@ class InnerCarousalBlock extends BlockBase {
         if ($selected_scroller == "Simple scroller" && $sub_foot_active == "Yes") {
              $html .=$ContentCustomControllerRef->getHtmlSection();
         }
-
+        /* Secton-3 this function is used to add Related Success Stories in ( Content custom module controller) */
+        if ($total_carousel_size > 3 && $add_success_stories_section=='Yes') {
+            $html .=$ContentCustomControllerRef->relatedResoureSlider($carousels);
+        }  
+        
 
     return [
       '#markup' => Markup::create($html),

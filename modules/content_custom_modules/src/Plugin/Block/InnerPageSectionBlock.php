@@ -110,7 +110,7 @@ class InnerPageSectionBlock extends BlockBase {
             //Section class 
             $section_class = $nodeItemData->field_section_class->getString();
             
-
+            //echo $Select_template;  die;
             switch($Select_template){
                   case "Right_img_with_head":
                       $return .=$this->right_image_with_head($body,$body_head,$path,$section_head,$section_subhead,$selected_scroller,$section_class,$section_class);
@@ -145,10 +145,22 @@ class InnerPageSectionBlock extends BlockBase {
                   case "Checklist_view":
                       $return .=$this->checklist_page_block1($html_body);
                       break;
+                  case "Client_view":
+                      $nodeId = $nodeItemData->get('nid')->value;
+                      $return .=$this->client_view($nodeId,$selected_scroller);
+                      break;
                   case "Horizontal_tab_view":
                   case "Verticle_tab_view": 
                         $nodeId = $nodeItemData->get('nid')->value;
                       $return .=$this->verticle_tab_view($nodeId,$Select_template,$selected_scroller,$section_class,$section_subhead);
+                      break;
+                  case "Differentiators_view":
+                      $nodeId = $nodeItemData->get('nid')->value;
+                      $return .=$this->differentiators_view($nodeId,$selected_scroller);
+                      break; 
+                  case "Contact_us_view":
+                      $nodeId = $nodeItemData->get('nid')->value;
+                      $return .=$this->contact_us_view($nodeId,$section_head,$section_subhead,$body);
                       break;
             }
           }
@@ -158,7 +170,6 @@ class InnerPageSectionBlock extends BlockBase {
         {
           $return.='<div class="section  clearfix">'.$Select_template.'</div>';
         }
-      
         return [
           '#markup' => Markup::create($return),
         ];
@@ -231,6 +242,37 @@ public function right_image_with_head($body,$body_head,$path,$section_head,$sect
             }
         return $return;
 }
+
+  /*************************************************************************
+     * Method Name      : simple_form_only()  Callback function for partner Carousel
+     * Local variable   : $selected_scroller            Scroller value (Simple scroller or Slim scroller)
+     * Local variable   : $section_class                Class apply on a particular section.
+     * Local variable          :  $form_id              Form id parameter
+     ************************************************************************/
+public function simple_form_only($selected_scroller,$section_class,$form_id){
+  $ContentCustomControllerRef = new ContentCustomModulesController;
+        $return ='';
+         // if($selected_scroller=="Slim scroller"){
+         //   $return .='</div>';  
+         // } 
+        $return .='<div  class="'.$section_class.'" style=" padding: 120px 0px 0px;" id="contact-form">
+        <div class="container-fluid">
+        <div class="container framework_form ">
+          
+              <h2 class="head-insta-main color-bla">Contact Us</h2>';
+                $return .=$ContentCustomControllerRef->loader_success_msg("talkmsg_framework_page");// <!-- 21-3-16 Success msg-->
+               $return .='<div class="row">
+              <div class="form-frame">';
+              //Render a framework page webform by using form id(webform-client-form-171)
+                $return .=drupal_render($ContentCustomControllerRef->loadWebform($form_id));
+                $return .='</div></div>';
+        $return .='</div></div>';
+         if($selected_scroller=="Simple scroller"){
+                $return .='</div>';
+         }
+        return $return;
+}
+
 
  /*************************************************************************
      * Method Name      : left_image()                  Callback function for left_image
@@ -511,10 +553,10 @@ public function verticle_tab_view($nodeId,$Select_template,$selected_scroller,$s
       else
       $body_content[$i] = "";
 
-      if($paragraph->get('field_tab_body_image')->getValue())
-        $h_body_image[$i] = file_create_url($paragraph->get('field_tab_body_image')->getValue()[0]['value']);
+      if($paragraph->hasField('field_tab_body_image') && !$paragraph->get('field_tab_body_image')->isEmpty())
+        $h_body_image[$i] = file_create_url($paragraph->get('field_tab_body_image')->entity->getFileUri());
       else
-      $h_body_image[$i] = "";
+        $h_body_image[$i] = "";
       $i++;
     }
 
@@ -524,6 +566,9 @@ public function verticle_tab_view($nodeId,$Select_template,$selected_scroller,$s
         }
         if($Select_template=="Verticle_tab_view"){
             $return .=$this->verticle_tab_view_structure($tab_head,$tab_body_head,$body_content,$section_subhead,$selected_scroller,$section_class);  
+        }
+        if($Select_template=="contact-us"){ 
+          $return .=$this->contact_us_address_section_view_structure($tab_head,$h_body_image,$tab_body_head,$body_content,$section_subhead,$selected_scroller,$section_class); 
         }
          unset($tab_head);
          unset($tab_body_head);
@@ -673,5 +718,298 @@ public function design_view(  $body,$selected_scroller ,$section_class) {
          }
     return $return;
 }
+/*************************************************************************
+     * Method Name      : client_view           This function is used to collect the data for HTML structure
+************************************************************************/ 
+public function client_view($nodeId,$selected_scroller)
+{
+   $nodeData = Node::load($nodeId);
+  //get multiple paragraph data of tab view of IOT & wearable page...
+  if ($paragraph_field_items = $nodeData->get('field_client_title_and_img')->getValue()) {
+    // Get storage. It very useful for loading a small number of objects.
+    $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+    // Collect paragraph field's ids.
+    $ids = array_column($paragraph_field_items, 'target_id');
+    // Load all paragraph objects.
+    $paragraphs_objects = $paragraph_storage->loadMultiple($ids);
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $i =0;
+    foreach ($paragraphs_objects as $paragraph) {
+      // Get field from the paragraph.
+      if($paragraph->get('field_client_icon_class')->getValue())
+        $client_icon_class[$i] = $paragraph->get('field_client_icon_class')->getValue()[0]['value'];
+      else
+        $client_icon_class[$i] = "";
+      
+      if($paragraph->get('field_client_cat_title')->getValue())
+        $client_cat_title[$i] = $paragraph->get('field_client_cat_title')->getValue()[0]['value'];
+      else
+      $client_cat_title[$i] = "";
 
+      if($paragraph->hasField('field_client_images') && !$paragraph->get('field_client_images')->isEmpty()){
+           $j=0;
+          foreach ($paragraph->get('field_client_images') as $entityImages) {
+              $client_images[] = file_create_url($entityImages->entity->getFileUri());
+          }
+          $client_image_logo[$i]=$client_images;
+          unset($client_images);
+      }
+      else
+        $client_images[0][$i]="";
+
+      $i++;
+    }
+    if(sizeof($client_icon_class) >0 || sizeof($client_cat_title) > 0){
+         $return .=$this->client_view_structure($selected_scroller,$client_icon_class,$client_cat_title,$client_image_logo);
+     }
+  }
+  return $return;
+}
+/*************************************************************************
+     * Method Name      : client_view_structure           Callback function for  client_view
+     * Local variable   : $selected_scroller            Scroller value (Simple scroller or Slim scroller)
+     * Local variable   : $client_icon_class                Class apply on a particular section.
+     * Local variable   : $client_cat_title                Class apply on a particular section.
+     * Local variable   : $client_image_logo                Class apply on a particular section.
+     * @return          :  $return                      Return string
+     ************************************************************************/ 
+  public function client_view_structure($selected_scroller,$client_icon_class,$client_cat_title,$client_image_logo){
+        $return ='';
+            if($selected_scroller=="Slim scroller"){
+              $return .='</div>';  
+            } 
+            $return .='<div class="container-fluid ">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12 main-inner-para">
+                            <h1 class="headingmain-blue text-center">Our Clients</h1>
+                            <h6 class="inner-sub-in text-center ">Trusted development partner of Startups to Fortune 500 companies</h6>
+                            <div class="clien-main-sec">
+                                <ul class="clearfix">';
+            $counter =0;
+            while (sizeof($client_icon_class)>$counter || sizeof($client_cat_title)>$counter){
+                    $return .='<li class="client-li">
+                        <div class="left-clent"> 
+                          <span class="'.$client_icon_class[$counter].'"></span>'.$client_cat_title[$counter].'
+                        </div>
+                        <div class="right-client">
+                            <div class="client-logos">
+                                <ul >';
+                                    if($counter < sizeof($client_image_logo)){
+                                        $count=0;
+                                        while($count< sizeof($client_image_logo[$counter])){
+                                                $return .='<li><img src="'.$client_image_logo[$counter][$count].'"></li>';
+                                            $count++;
+                                        }
+                                    }
+                     $return .='</ul>
+                            </div>
+                            </div>
+                    </li>';
+            $counter++;
+            }
+            $return.='</ul>
+                           </div>
+                           <div class="our-client-tab">
+                                <div id="accordion" class="panel-group client-tab " aria-multiselectable="true" role="tablist">';
+                                $counter=0;
+                        while (sizeof($client_icon_class)>$counter || sizeof($client_cat_title)>$counter){
+                                $return .='<div class="panel panel-default">
+                                    <div id="heading'.$counter.'" role="tab" class="panel-heading">
+                                      <h4 class="panel-title clie-head">';
+                                    if($counter ==0){
+                                           $return .='<a aria-controls="collapseOne" aria-expanded="true" href="#client'.$counter.'" data-parent="#accordion" data-toggle="collapse" role="button">';
+                                    }
+                                    else{
+                                           $return .='<a aria-controls="collapseOne " aria-expanded="false" href="#client'.$counter.'" data-parent="#accordion" data-toggle="collapse" role="button">';
+                                    }
+                                    $return .='<span class="'.$client_icon_class[$counter].' clearfix"></span> '.$client_cat_title[$counter].' 
+                                        </a>
+                                      </h4>
+                                    </div>
+                                    <div aria-labelledby="headingOne " role="tabpanel" class="panel-collapse collapse" id="client'.$counter.'">
+                                      <div class="panel-body">
+                                            <div class="right-client"> <div class="client-logos"><ul>';//26-2-16
+                                     if($counter < sizeof($client_image_logo)){
+                                            $count=0;
+                                            while($count< sizeof($client_image_logo[$counter])){
+                                                    $return .='<li><img src="'.$client_image_logo[$counter][$count].'"></li>';
+                                                $count++;
+                                            }
+                                        }
+                                      $return .='</ul></div></div>
+                                      </div>
+                                    </div>
+                                  </div>';
+                                $counter++;
+                        }                                
+                        $return .='</div>
+                             </div>
+                         </div>
+                    </div>
+                </div>';
+            if($selected_scroller=="Simple scroller"){
+                   $return .='</div>';
+            }
+        return $return;
+  }
+  /*Full html block Start*/
+  public function full_html($selected_scroller,$section_class,$html_body){
+      $return ='';
+     if($selected_scroller=="Slim scroller"){
+                $return .='</div>';  
+              } 
+              $return.='<div class=" container">';
+               $return.=$html_body;
+              
+                if($selected_scroller=="Simple scroller"){
+                     $return .='</div>';
+              }
+          return $return;
+  }
+  /*************************************************************************
+     * Method Name      : differentiators_view           Callback function for  client_view
+     * Local variable   : $selected_scroller            Scroller value (Simple scroller or Slim scroller)
+     * @return          :  $return                      Return string
+     ************************************************************************/ 
+  public function differentiators_view($nodeId,$selected_scroller)
+  {
+    $nodeData = Node::load($nodeId);
+      //get multiple paragraph data of tab view of IOT & wearable page...
+      if ($paragraph_field_items = $nodeData->get('field_differentiator_view')->getValue()) {
+        // Get storage. It very useful for loading a small number of objects.
+        $paragraph_storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+        // Collect paragraph field's ids.
+        $ids = array_column($paragraph_field_items, 'target_id');
+        // Load all paragraph objects.
+        $paragraphs_objects = $paragraph_storage->loadMultiple($ids);
+        /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+        $i =0;
+        foreach ($paragraphs_objects as $paragraph) {
+          // Get field from the paragraph.
+          if($paragraph->get('field_differentiator_heading')->getValue())
+            $differentiator_heading[$i] = $paragraph->get('field_differentiator_heading')->getValue()[0]['value'];
+          else
+            $differentiator_heading[$i] = "";
+          
+          if($paragraph->get('field_differentiator_content')->getValue())
+            $differentiator_content[$i] = $paragraph->get('field_differentiator_content')->getValue()[0]['value'];
+          else
+          $differentiator_content[$i] = "";
+
+          if($paragraph->hasField('field_differentiator_image') && !$paragraph->get('field_differentiator_image')->isEmpty())
+            $differentiator_image[$i] = file_create_url($paragraph->get('field_differentiator_image')->entity->getFileUri());
+          else
+          $differentiator_image[$i] = "";
+          
+         if($paragraph->hasField('field_diff_class') && !$paragraph->get('field_diff_class')->isEmpty())
+            $diff_class[$i] = $paragraph->get('field_diff_class')->getValue()[0]['value'];
+          else
+            $diff_class[$i] = "";
+          
+          $i++;
+        }
+
+        if(sizeof($differentiator_content) >0){
+             $return .=$this->differentiator_view_structure($selected_scroller,$differentiator_heading,$differentiator_content,$differentiator_image,$diff_class);
+        }
+      }
+      return $return;
+  }
+  /*************************************************************************
+     * Method Name      : differentiator_view_structure           Callback function for  client_view
+     * Local variable   : $selected_scroller            Scroller value (Simple scroller or Slim scroller)
+     * Local variable   : $differentiator_heading                Class apply on a particular section.
+     * Local variable   : $differentiator_content                Class apply on a particular section.
+     * Local variable   : $differentiator_image                Class apply on a particular section.
+     * Local variable   : $diff_class                   Class apply on a particular section.
+     * @return          : $return                      Return string
+     ************************************************************************/ 
+  public function differentiator_view_structure($selected_scroller,$differentiator_heading,$differentiator_content,$differentiator_image,$diff_class)
+  {
+       $return ='';
+       $count=0;
+        if($selected_scroller=="Slim scroller"){
+                  $return .='</div>';  
+        } 
+        $return.='<div class=" container">
+                   <div class="row">
+                      <div class="comp-poli clearfix">';
+        while($count<sizeof($differentiator_content)){
+                            $return.='<div class="col-md-4 col-sm-6  ">
+              <h3 class="'.$diff_class[$count].'">'.$differentiator_heading[$count].'</h3>
+              <div class="cont-diff main-inner-para">
+                <div class="box-white"> <img src="'.$differentiator_image[$count].'"> </div>
+                '.$differentiator_content[$count].'
+              </div>
+            </div>';
+            $count++;
+        }
+        $return.='    </div>'
+                . ' </div>';
+       if($selected_scroller=="Simple scroller"){
+                       $return .='</div>';
+        }
+      return $return;
+  }
+  public function contact_us_view($nodeId,$section_head,$section_subhead,$body)
+  {
+      $ContentCustomControllerRef = new ContentCustomModulesController;
+      $html.='<div class="full_width_Cntact_Page" id="contact_page_form">
+        <div class="container">
+          <h1 class="headingmain-blue text-center ">'.$section_head.'</h1>
+          <div class="form-main pull-left col-md-7 col-sm-6 col-xs-12 nopadding"> 
+                <span id="contact_page_talkmsg" class="success_msg_class" style="display: none"> Thanks for contacting us, someone from our team will be in touch with you soon.</span> 
+                '.drupal_render($ContentCustomControllerRef->loadWebform('checklist_page_form')).'
+            </div>
+            <div class="pull-right  col-md-5 col-sm-6 col-xs-12 ">
+                <div class="email_us">
+                    <h3 class="popup_head_2 email-ic"><span class=""></span>'.$section_subhead.'</h3>'.$body.'</div>
+            </div>
+        </div>
+    </div>';
+
+    $html.='<div class="section address" id="section5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 Contactez Contactez_cc">
+            <h1 class="text-center">Our Offices Address</h1>
+            <div class="contact-list">';
+            //Get paragraph entity data via predefine function..... #contact-us section 2
+            $html.=$this->verticle_tab_view($nodeId,'contact-us',$selected_scroller="",$section_class="",$section_subhead="");
+    
+    $html.='</div></div></div></div></div></div>';
+
+  return $html;
+  }
+
+   /*************************************************************************
+     * Method Name      : contact_us_address_section_view_structure           Callback function for 
+     * Local variable   : $selected_scroller            Scroller value (Simple scroller or Slim scroller)
+     * Local variable   : $tab_head                Class apply on a particular section.
+     * Local variable   : $tab_body_head                Class apply on a particular section.
+     * Local variable   : $body_content                Class apply on a particular section.
+     * Local variable   : $section_subhead                   Class apply on a particular section.
+     * Local variable   : $section_class                   Class apply on a particular section.
+     * @return          : $return                      Return string
+     ************************************************************************/ 
+  public function contact_us_address_section_view_structure($tab_head,$h_body_image,$tab_body_head,$body_content,$section_subhead,$selected_scroller,$section_class)
+  {
+      $html=""; $i=0;
+      foreach ($tab_head as $tab_sec) {
+          $html.='<div class="col-md-4 col-sm-6">
+                    <div class="bg-'.str_replace(' ','-',str_replace(array( '(', ')' ), '', strtolower($tab_head[$i]))).'">
+                      <div class="location-img">
+                        <img src="'.$h_body_image[$i].'" alt="'.$tab_head[$i].'">
+                      </div>
+                      <div class="address">
+                        <h3>'.$tab_head[$i].'</h3>
+                        '.$body_content[$i].'
+                        <h5 class="content-number">'.$tab_body_head[$i].'</h5>
+                      </div>
+                    </div></div>';  
+        $i++;
+      }
+      return $html;
+  }
 }

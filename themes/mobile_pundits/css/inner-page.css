@@ -595,3 +595,6 @@ div.error, .error { color: #f00 !important; font-size: 12px !important; }
 .actaris { background-color: #030F89; }
 .brightOutcomes { background-color: #0587B7; }
 .client-sto .fa { opacity: 0.5; }
+.sec-diff-evo ul.evo-logo-main img {
+    width: auto;
+}

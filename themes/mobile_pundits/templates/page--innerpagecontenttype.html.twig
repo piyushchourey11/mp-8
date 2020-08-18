@@ -9,4 +9,16 @@
  <!--Header end-->
 
  {{ drupal_block('inner_carousel_block') }}
- 
+
+ {% if node.id == 256 %}
+ 	{{ drupal_block('front_page_award_block',{isPage: 'award'}) }}
+ {% endif %}
+
+ {% if node.id == 177 %}
+ 	{{ drupal_block('front_page_resources_block',{isPage: 'resources'}) }}
+ {% endif %} 
+
+ {% if node.id == 209 %}
+ 	{{ drupal_block('success_stories') }}
+ {% endif %}
+

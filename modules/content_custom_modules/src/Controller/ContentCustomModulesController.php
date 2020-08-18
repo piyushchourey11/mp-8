@@ -10,6 +10,7 @@ use Drupal\node\Entity\Node;
 // use Drupal\Core\Entity\EntityInterface;
 // use Drupal\Core\Entity\EntityViewBuilder;
 use Drupal\webform\Entity\Webform;
+use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionForm;
 use Drupal\paragraphs\Entity\Paragraph;
 
@@ -148,13 +149,6 @@ use Drupal\paragraphs\Entity\Paragraph;
         {
           $logo_image = file_url_transform_relative(file_create_url(theme_get_setting('logo.url')));
           $logo_image = \Drupal::request()->getSchemeAndHttpHost().$logo_image;
-          //$formContent = $this->loadWebform('popup_contact_form');
-           //print_r($formContent); die;
-           //$my_form = \Drupal\webform\Entity\Webform::load('popup_contact_form');
-          //$formContent = \Drupal::entityManager()
-            //->getViewBuilder('webform')
-            //->view($my_form);
-            //print_r($formContent); die;
           if($request->get(id)){ 
             $nodeId = $request->get(id);
             $nodesData = Node::load($nodeId);
@@ -501,4 +495,103 @@ use Drupal\paragraphs\Entity\Paragraph;
                   </div>';
         return $html;             
       }
+       /* Related success stories slider html content */
+      public function relatedResoureSlider($carouselS){
+        $i = 0;
+        $carousel_tpl_head = array();
+        $tpl_back_img = array();
+        $popup_page_node_id = array();
+        $nodes = Node::loadMultiple($carouselS);
+        $total_item = count($nodes);
+        $carousel_id = array();
+        global $theme_path;
+
+        if (count($nodes) > 0) {
+        foreach ($nodes as $nodeItem) {//Get a pdf content type field values on the basis of carousel id 
+            $carousel_id = str_replace(' ', '_',  $nodeItem->get('field_select_pdf_popup_page')->getValue()[0]['target_id']);
+            
+            $query = \Drupal::entityQuery('node');
+            $query->condition('status', 1)
+                  ->condition('type', 'pdf_content_type')
+                  ->condition('field_select_popup_page_for_pdf', $carousel_id);
+            $result = $query->execute(); //node id array
+            
+            $nodes = Node::loadMultiple($result);  //Load all the nodes or fieldvalues  of a nodes
+
+            foreach ($nodes as $nodeItem) {
+              if($nodeItem->hasField('field_pdf_head') && !$nodeItem->get('field_pdf_head')->isEmpty()){
+                $body = $nodeItem->get('field_pdf_head')->getValue();
+                $carousel_tpl_head[$i] = $body[0]['value'];
+              }
+
+              if($nodeItem->hasField('field_tpl_back_image') && !$nodeItem->get('field_tpl_back_image')->isEmpty())
+                $tpl_back_img[$i] = file_create_url($nodeItem->field_tpl_back_image->entity->getFileUri());
+                
+              if($nodeItem->hasField('field_select_popup_page_for_pdf') && !$nodeItem->get('field_select_popup_page_for_pdf')->isEmpty()){
+                $body = $nodeItem->get('field_select_popup_page_for_pdf')->getValue();
+                $popup_page_node_id[$i] = $body[0]['target_id'];
+              }
+                $i++;
+            }
+        }
+        $return .='<div class=" section  related-success ">
+                            <div class="container">
+                                <h2 class="inner-page-head text-center">Related Success Stories </h2>
+                                <div class="box clearfix">';
+        $counter = 0;
+        if (sizeof($tpl_back_img) > 0) {//related_carousel0
+            $return .='<div id="demo'.$counter.'"   >
+                         <div class="owl-carousel tab-carousel owl-theme carousel_class" id="related-succ-stories" style="opacity: 1; display: block;">';
+            while ($counter < sizeof($tpl_back_img)) {
+              
+                if ($tpl_back_img[$counter] != "") {
+                    $return .='<div class="item ">
+                                    <div class="tabscontet-border m-r-10">';
+                    $return .='<div class="chek-img-sec">';
+                    //Successs story
+                    $return .=' <a href="#" class="success-story" value="' . $popup_page_node_id[$counter] . '">
+                                        <div class="curo-img-in" > <img src="' . $tpl_back_img[$counter] . '"> </div>
+                                        <div class="text-check">
+                                          <p> ' . $carousel_tpl_head[$counter] . ' </p>
+                                        </div>
+                                        <div class="tab-pdf-in">
+                                            <img src="' . $theme_path . '/images/req/download_pdf_icon.png">
+                                        </div>
+                                        <div class="  tab-pdf-out">
+                                            <img src="' . $theme_path . '/images/req/download_pdf_icon_white.png">
+                                        </div>
+                                        </a>';
+                    $return .='</div></div></div>';
+                }
+                $counter++;
+            }
+            $return .='</div></div>';
+        }
+         $return .='</div></div></div>';
+      }
+      return $return;
+    }
+
+    public function cross_site_form($value='')
+    {
+        $webform_id = $_POST['form_id'];
+        $webform = Webform::load('popup_contact_form');
+        $is_open = WebformSubmissionForm::isOpen($webform);
+        // Create webform submission.
+        if ($is_open === TRUE) {
+          $values = [
+            'webform_id' => $webform->id(),
+            'data' => [
+              'name' => 'John Smith',
+              'email' => 'John.Smith@example.com',
+              'subject' => 'Hi!',
+              'message' => 'Added via submission entity',
+            ],
+          ];
+
+          /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+          $webform_submission = WebformSubmission::create($values);
+          $webform_submission->save();
+    }
+  }
 }

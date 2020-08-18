@@ -84,11 +84,11 @@ $(document).ready(function () {
         formValidator(contactForm); //formValidator("#webform-client-form-292");
 
     });
-    $(document).on("submit", ".checklist_form_btn", function () { //Checklist page form id
-        var contactForm = $(this).parents("form.contact_form_valid");
-        formValidator(contactForm); //formValidator("#webform-client-form-292");
+    // $(document).on("submit", ".checklist_form_btn", function () { //Checklist page form id
+    //     var contactForm = $(this).parents("form.contact_form_valid");
+    //     formValidator(contactForm); //formValidator("#webform-client-form-292");
 
-    });
+    // });
     $(document).on("click", "#light_frm_submit_btn", function () { //Checklist page form id
         var contactForm = $(this).parents("form.contact_form_valid");
         formValidator(contactForm);
@@ -105,6 +105,7 @@ $(document).ready(function () {
     /**************************Define Validation Start  "**************************/
     function formValidator(form_btn_id) {
         var contact_form_id = $(form_btn_id).attr("id");
+        console.log(contact_form_id);
         form_btn_id.validate({
             rules: {
                 'submitted[first_name]': {
@@ -193,23 +194,23 @@ $(document).ready(function () {
             submitHandler: function (form) {
                 var ar = contact_form_id.split('-');
                 var form_id = ar[ar.length - 1];
-                if (contact_form_id == "webform-client-form-99") { //Inside popup form
+                if (contact_form_id == "webform-submission-popup-contact-form-add-form") { //Inside popup form
                     $("#popup_submit_btn").attr("value", "Sending...").css({
                         color: "white",
                         background: "#f79616 none repeat scroll 0 0",
                         disabled: true
                     });
-                    var name = $("#edit-submitted-name").val();
-                    var email = $("#webform-client-form-99 #edit-submitted-email").val();
-                    var company = $("#edit-submitted-company").val();
-                    var contact = $("#edit-submitted-phone").val();
-                    var country = $("#edit-submitted-country").val();
-                    var comment = $("#edit-submitted-comment").val();
+                    var name = $("#edit-name").val();
+                    var email = $("#edit-email").val();
+                    var company = $("#edit-company").val();
+                    var contact = $("#edit-phone").val();
+                    var country = $("#edit-country").val();
+                    var comment = $("#edit-comment").val();
                     $.ajax({
                         type: "POST",
-                        url: Drupal.settings.basePath + 'cross_site_form',
+                        url: drupalSettings.basePath + '/cross_site_form',
                         data: {
-                            form_id: form_id,
+                            form_id: contact_form_id,
                             name: name,
                             email: email,
                             company: company,
@@ -217,7 +218,7 @@ $(document).ready(function () {
                             country: country,
                             comment: comment
                         },
-                        success: function (result) {
+                        success: function (result) { console.log(result);
                             if (result == true) { // if (result != '') {
                                 //$("#popup_submit_btn").attr("value", "Let's Talk").css({color: "white", background: "#f79616 none repeat scroll 0 0", disabled: false});
                                 $("#popup_submit_btn").attr("value", "Submit").css({
@@ -225,7 +226,7 @@ $(document).ready(function () {
                                     background: "#f79616 none repeat scroll 0 0",
                                     disabled: false
                                 });
-                                $("#webform-client-form-99").hide().trigger("reset"); //reset this form on reload a page;
+                                $("#"+contact_form_id).hide().trigger("reset"); //reset this form on reload a page;
                                 $("#pop_talkmsg").fadeIn().show(1000);
                                 ga('send', 'pageview', '/contactUs/thanks.html');
                             } else {}
@@ -233,7 +234,8 @@ $(document).ready(function () {
                     });
                 }
 
-                if (contact_form_id == "webform-client-form-292") { //Checklist page form
+                if (contact_form_id == "webform-submission-award-consulatation-form-node-313-add-form") { //Checklist page form
+                    alert("dsadsad"); return false;
                     var id_class;
                     if ($("#free_consultation_form_popup").css("display") == "block") {
                         id_class = "#free_consultation_form_popup";
@@ -244,52 +246,53 @@ $(document).ready(function () {
                     }
                     // $(id_class).find(".checklist_form_btn").attr({disabled: true, value: "Sending..."});
                     $(id_class).find(".check_talkmsg").hide();
-                    var name = $(id_class).find("#edit-submitted-name").val();
-                    var email = $(id_class).find("#edit-submitted-email").val();
-                    var contact = $(id_class).find("#edit-submitted-phone").val();
-                    var country = $(id_class).find("#edit-submitted-country").val();
-                    var comment = $(id_class).find("#edit-submitted-comment").val();
+                    var name = $("#edit-name").val();
+                    var email = $("#edit-email").val();
+                    var company = $("#edit-company").val();
+                    var contact = $("#edit-phone").val();
+                    var country = $("#edit-country").val();
+                    var comment = $("#edit-comment").val();
 
 
-                    var honey_form_value = $(id_class).find("input[name=form_build_id]").val();
-                    var honey_form_id = $(id_class).find("input[name=form_token]").val();
+                    // var honey_form_value = $(id_class).find("input[name=form_build_id]").val();
+                    // var honey_form_id = $(id_class).find("input[name=form_token]").val();
 
-                    var googleResponse = "";
-                    console.log("testing");
+                    // var googleResponse = "";
+                    // console.log("testing");
 
-                    if ($(id_class).find('.g-recaptcha-response').length) {
-                        googleResponse = $(id_class).find('.g-recaptcha-response').val();
-                    }
-                    if (!googleResponse) {
-                        console.log("Captcha not  "+googleResponse);
-                        $(id_class).find("#captchaError").css("display", "block");
-                        return false;
-                    } else {
-                        $(id_class).find("#captchaError").css("display", "none");
-                        $(id_class).find(".checklist_form_btn").attr({
-                            disabled: true,
-                            value: "Sending..."
-                        });
-                        //captchaError
-                    }
+                    // if ($(id_class).find('.g-recaptcha-response').length) {
+                    //     googleResponse = $(id_class).find('.g-recaptcha-response').val();
+                    // }
+                    // if (!googleResponse) {
+                    //     console.log("Captcha not  "+googleResponse);
+                    //     $(id_class).find("#captchaError").css("display", "block");
+                    //     return false;
+                    // } else {
+                    //     $(id_class).find("#captchaError").css("display", "none");
+                    //     $(id_class).find(".checklist_form_btn").attr({
+                    //         disabled: true,
+                    //         value: "Sending..."
+                    //     });
+                    //     //captchaError
+                    // }
                     $.ajax({
                         type: "POST",
-                        url: Drupal.settings.basePath + 'cross_site_form',
+                        url: drupalSettings.basePath + 'cross_site_form',
                         data: {
-                            form_id: form_id,
+                            form_id: contact_form_id,
                             name: name,
                             email: email,
                             contact: contact,
                             country: country,
                             comment: comment,
-                            honey_form_value: honey_form_value,
-                            honey_form_id: honey_form_id,
-                            googleResponse: googleResponse
+                            // honey_form_value: honey_form_value,
+                            // honey_form_id: honey_form_id,
+                            // googleResponse: googleResponse
                         },
                         success: function (result) {
                             console.log(result);
                             if (result == true) { // if (result != '') {
-                                $(id_class).find("#webform-client-form-292").trigger("reset").hide();
+                                $(id_class).find("#"+contact_form_id).trigger("reset").hide();
                                 $(id_class).find(".success_msg_class").fadeIn().show(1000); //.delay(2000).fadeOut();
                                 ga('send', 'pageview', '/contactUs/thanks.html');
                             } else {}
