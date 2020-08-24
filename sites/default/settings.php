@@ -758,7 +758,7 @@ if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 $databases['default']['default'] = array (
   'database' => 'mp_8',
   'username' => 'root',
-  'password' => 'root',
+  'password' => '',
   'prefix' => '',
   'host' => 'localhost',
   'port' => '3306',

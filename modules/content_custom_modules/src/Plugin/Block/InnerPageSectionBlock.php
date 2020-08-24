@@ -207,7 +207,7 @@ public function right_image_with_head($body,$body_head,$path,$section_head,$sect
                      <div class="inner-section">
                        <div class="content-sec ">
                          <h2 >'.$body_head.'</h2>
-                           '.$body.'  
+                           '.str_replace(array(', full_html',', filtered_html'),'',$body).'  
                        </div>
                        <div class="img-sec "> <img  src="'.$path.'" class="img-responsive"> </div>
                      </div>
@@ -229,7 +229,7 @@ public function right_image_with_head($body,$body_head,$path,$section_head,$sect
                        </div>
                      <div class="col-md-7  col-sm-12 col-xs-12 ">
                       <h2 >'.$body_head.'</h2>
-                           '.$body.' 
+                           '.str_replace(array(', full_html',', filtered_html'),'',$body).' 
                      </div>
                  </div>
                </div>';
@@ -297,7 +297,7 @@ public function left_image( $path, $body_head, $body,$selected_scroller,$section
                               <div class="img-sec"> <img src="' . $path .'" > </div>
                               <div class="content-sec ">
                                 <h2 >' . $body_head . '</h2>
-                                  '. $body . '
+                                  '. str_replace(array(', full_html',', filtered_html'),'',$body) . '
                               </div>
                             </div>
                           </div>';
@@ -313,7 +313,7 @@ public function left_image( $path, $body_head, $body,$selected_scroller,$section
                         if($body_head !=""){
                                 $return .='<h2 class="inner-page-head">'.$body_head .'</h2>';
                         }
-                        $return .=$body . '
+                        $return .=str_replace(', full_html','',$body) . '
                       </div>
                   </div>';
                }
@@ -355,7 +355,7 @@ public function Right_image($body,$body_head,$path,$section_head,$section_subhea
                            if($body_head !=""){
                                 $return .='<h2 class="inner-page-head">'.$body_head.'</h2>';
                             }
-                            $return .=''.$body.'
+                            $return .=''.str_replace(', full_html','',$body).'
                           </div>
                         </div>';
                  }
@@ -366,7 +366,7 @@ public function Right_image($body,$body_head,$path,$section_head,$section_subhea
                        if($body_head !=""){
                             $return .='<h2 >'.$body_head.'</h2>';
                        }
-                       $return .=''.$body.'
+                       $return .=''.str_replace(array(', full_html',', filtered_html'),'',$body).'
                       </div>
                       <div class=" img-sec m-b-res30"> <img  src="'.$path.'"> </div>
                     </div>
@@ -416,7 +416,7 @@ public function simple_content( $section_head, $body_head, $body,$section_subhea
                             }
                             $return .='<h6 class="inner-sub-head text-center " >' . $body_head . '</h6>
                                                 </div>
-                                                <div class="content-innerres text-left">' . $body . '</div>   
+                                                <div class="content-innerres text-left">' . str_replace(array(', full_html',', filtered_html'),'',$body) . '</div>   
                                               </div>
                                             </div>
                                           </div>';
@@ -427,7 +427,7 @@ public function simple_content( $section_head, $body_head, $body,$section_subhea
                               <h6 class="inner-sub-head text-center ">' . $section_subhead . '</h6>';
                 $return .='</div>
                      <div class="text-left">
-                      '. $body .'
+                      '. str_replace(', full_html','',$body) .'
                       </div>
                     </div>';          
             }
@@ -456,14 +456,14 @@ public function form_view($body,$selected_scroller,$section_class,$form_id){   /
                       <div class="container">
                        <div class="row">   
                          <div class="col-md-12 inner-section text-left">
-                             <div class="content-sec m-l-70">'.$body.'</div>
+                             <div class="content-sec m-l-70">'.str_replace(', full_html','',$body).'</div>
                                  <div class="getfree-form margin-autolr  bottom-form text-center green-form clearfix" style="margin:20px auto; "> 
                                      <h3>Get <span class="yellow-color">FREE</span> Consultation from our Experts</h3>
                                      <!-- 21-3-16 Success msg-->'; 
                                    $return .='';
                                   $return .=$ContentCustomControllerRef->loader_success_msg("talkmsg");
                                      $return .='<div class="get-form">';//Render a webform by using form id(webform-client-form-55)
-                                         //$return .=drupal_render($ContentCustomControllerRef->loadWebform('checklist_page_form'));
+                                         $return .=drupal_render($ContentCustomControllerRef->loadWebform('award_consulatation_form'));
                             $return .='</div>
                                  </div>
                               </div>
@@ -503,7 +503,7 @@ public function list_view( $body, $body_head,$path,$content_form,$selected_scrol
                          if($body_head != ""){   
                              $return .='<h2 class=" head-sub-se  m-b-10">'.$body_head.'</h2>';//inner-sub-headlarge m-b-40 text-center changed 4-3-16
                          }
-                       $return .=$body;
+                       $return .=str_replace(', full_html','',$body);
                         }
                         if($content_form == "Image_view"){
                              $return .='
@@ -964,7 +964,7 @@ public function client_view($nodeId,$selected_scroller)
             </div>
             <div class="pull-right  col-md-5 col-sm-6 col-xs-12 ">
                 <div class="email_us">
-                    <h3 class="popup_head_2 email-ic"><span class=""></span>'.$section_subhead.'</h3>'.$body.'</div>
+                    <h3 class="popup_head_2 email-ic"><span class=""></span>'.$section_subhead.'</h3>'.str_replace(', full_html','',$body).'</div>
             </div>
         </div>
     </div>';

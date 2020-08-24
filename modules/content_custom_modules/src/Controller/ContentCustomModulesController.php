@@ -13,6 +13,7 @@ use Drupal\webform\Entity\Webform;
 use Drupal\webform\Entity\WebformSubmission;
 use Drupal\webform\WebformSubmissionForm;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Component\Utility\Xss;
 
  class ContentCustomModulesController extends ControllerBase {
 
@@ -574,24 +575,111 @@ use Drupal\paragraphs\Entity\Paragraph;
 
     public function cross_site_form($value='')
     {
-        $webform_id = $_POST['form_id'];
-        $webform = Webform::load('popup_contact_form');
+        $webform_id = $_POST['form_id'];	
+		if($webform_id=='webform_submission_frameworks_contact_form_node_166_add_form'){
+				$webform_machine_id='frameworks_contact_form';
+				$first_name =  Xss::filter($_POST['first_name']);
+                $company_name =  Xss::filter($_POST['company_name']);
+                $ecommerce_store_url =  Xss::filter($_POST['ecommerce_store_url']);
+                $email =  Xss::filter($_POST['email']);
+                $tel1 =  Xss::filter($_POST['tel1']);
+                $country =  Xss::filter($_POST['country']);
+                $e_platform =  Xss::filter($_POST['e_platform']);
+                $data = array(
+                'first_name' => ($first_name),
+                'company_name_' =>($company_name),
+                'ecommerce_store_url' => ($ecommerce_store_url),
+                'email' => ($email),
+                'telephone_1' => ($tel1),
+                'which_ecommerce_platform_are_you_using_' => ($e_platform),
+                'country' => ($country)
+               );
+		}else{
+			if($webform_id=='webform-submission-popup-contact-form-add-form'){
+				$webform_machine_id='popup_contact_form';
+				$fname = Xss::filter($_POST['name']);
+				// $company_name = Xss::filter($_POST['company']);
+				$country = Xss::filter($_POST['country']);
+				$email = Xss::filter($_POST['email']);
+				$comments = Xss::filter($_POST['comment']);
+				$contact = Xss::filter($_POST['contact']); 
+				$data = array(
+                'name' => ($fname),
+                'country' =>($country),
+                'email' => ($email),
+                'comments' => ($comments),
+                'contact' => ($contact)
+               );
+			}
+			if($webform_id=='webform-submission-award-consulatation-form-node-313-add-form' || $webform_id=='webform-submission-award-consulatation-form-node-47-add-form'){
+				$webform_machine_id='award_consulatation_form';
+				$fname = Xss::filter($_POST['name']);
+				// $company_name = Xss::filter($_POST['company']);
+				$country = Xss::filter($_POST['country']);
+				$email = Xss::filter($_POST['email']);
+				$comments = Xss::filter($_POST['comment']);
+				$contact = Xss::filter($_POST['contact']); 
+				$data = array(
+                'name' => ($fname),
+                'country' =>($country),
+                'email' => ($email),
+                'comments' => ($comments),
+                'phone' => ($contact)
+               );
+			}
+			if($webform_id=='webform-submission-award-consulatation-form-node-500-add-form'){
+				$webform_machine_id='award_consulatation_form';
+				$fname = Xss::filter($_POST['name']);
+				// $company_name = Xss::filter($_POST['company']);
+				$country = Xss::filter($_POST['country']);
+				$email = Xss::filter($_POST['email']);
+				$comments = Xss::filter($_POST['comment']);
+				$contact = Xss::filter($_POST['contact']); 
+				$data = array(
+                'name' => ($fname),
+                'country' =>($country),
+                'email' => ($email),
+                'comments' => ($comments),
+                'phone' => ($contact)
+               );
+			}
+			if($webform_id=='webform-submission-checklist-page-form-node-520-add-form'){
+				$webform_machine_id='checklist_page_form';
+				$fname = Xss::filter($_POST['name']);
+				// $company_name = Xss::filter($_POST['company']);
+				$country = Xss::filter($_POST['country']);
+				$email = Xss::filter($_POST['email']);
+				$comments = Xss::filter($_POST['comment']);
+				$contact = Xss::filter($_POST['contact']); 
+				$data = array(
+                'name' => ($fname),
+                'country' =>($country),
+                'email' => ($email),
+                'comments' => ($comments),
+                'phone' => ($contact)
+               );
+			}
+			
+
+		}
+        $webform = Webform::load($webform_machine_id);
         $is_open = WebformSubmissionForm::isOpen($webform);
         // Create webform submission.
+		$current_user = \Drupal::currentUser();
         if ($is_open === TRUE) {
           $values = [
             'webform_id' => $webform->id(),
-            'data' => [
-              'name' => 'John Smith',
-              'email' => 'John.Smith@example.com',
-              'subject' => 'Hi!',
-              'message' => 'Added via submission entity',
-            ],
+			'uid' => $current_user->id(),
+			'remote_addr' => \Drupal::request()->getClientIp(),
+            'data' => $data,
           ];
 
           /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
           $webform_submission = WebformSubmission::create($values);
           $webform_submission->save();
+		  // print $webform_submission->id();
+		  
     }
+	return new Response(1);
   }
 }

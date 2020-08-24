@@ -1,4 +1,4 @@
-$(document).ready(function () {
+jQuery(document).ready(function ($) {
 
     //Checklist popup page form open close
     $("#model").on("click", function () {
@@ -8,7 +8,9 @@ $(document).ready(function () {
         $(".check-talkmsg1").hide();
     });
 
-
+jQuery('.simple_scroller  #myCarousel-inner').css('padding-top',jQuery('#header').height()-20);
+jQuery('.simple_scroller').css('margin-top',0);
+jQuery('.inner-page-class.slim_scroller #section0').css('padding-top',jQuery('#header').height()-20);
 
     var insight_text, pdf_id;
     $(".insights-imgs").on("click", function () {
@@ -79,10 +81,133 @@ $(document).ready(function () {
         var contactForm = $(this).parents("form.contact_form_valid");
         formValidator(contactForm); //formValidator("#webform-client-form-99");
     }); //free_consultation
+	function nameFieldValidation(contactForm,hasValid=false){
+		var name=contactForm.find('#edit-name').val();
+			contactForm.find('#edit-name').siblings('label.error').remove();
+			name=name.trim();
+			if(name==''){
+				jQuery('<label class="error">Please enter  your name</label>').insertAfter(contactForm.find('#edit-name'));
+				hasValid=false;
+			}else if(/^[A-Za-z]+(( [A-Za-z]+)|('[A-Za-z]+)|( +))*$/.test(name)==false){
+				jQuery('<label class="error">Alphabets only</label>').insertAfter(contactForm.find('#edit-name'));
+				hasValid=false;
+			}else if(name.length <2 || name.length >30){
+				jQuery('<label class="error">Name must be between 2 and 30 characters long.</label>').insertAfter(contactForm.find('#edit-name'));
+				hasValid=false;
+			}else{
+				hasValid=true;
+			}
+			return hasValid;
+	}
+	function emailFieldValidation(contactForm,hasValid=true){
+		var email=contactForm.find('#edit-email').val();
+			contactForm.find('#edit-email').siblings('label.error').remove();
+			email=email.trim();
+			if(email==''){
+				jQuery('<label class="error">Please enter  your email address</label>').insertAfter(contactForm.find('#edit-email'));
+				hasValid=false;
+			}else if(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i.test(email)==false){
+				jQuery('<label class="error">Please enter valid mail id</label>').insertAfter(contactForm.find('#edit-email'));
+				hasValid=false;
+			}else{
+				hasValid=hasValid;
+			}
+			return hasValid;
+	}
+	function phoneFieldValidation(contactForm,hasValid=true){
+		var phone=contactForm.find('#edit-phone').val();
+			contactForm.find('#edit-phone').siblings('label.error').remove();
+			phone=phone.trim();
+			if(phone==''){
+				jQuery('<label class="error">Please enter your phone number</label>').insertAfter(contactForm.find('#edit-phone'));
+				hasValid=false;
+			}else if(/^[\(\)\.\- ]{0,}[0-9]{3}[\(\)\.\- ]{0,}[0-9]{3}[\(\)\.\- ]{0,}[0-9]{4}[\(\)\.\- ]{0,}$/.test(phone)==false){
+				jQuery('<label class="error">Please enter valid Phone number</label>').insertAfter(contactForm.find('#edit-phone'));
+				hasValid=false;
+			}else if(phone.length <6){
+				jQuery('<label class="error">Phone number at least 6 digits long.</label>').insertAfter(contactForm.find('#edit-phone'));
+				hasValid=false;
+			}else{
+				hasValid=hasValid;
+			}
+			return hasValid;
+	}
+	$('#webform-submission-award-consulatation-form-node-500-add-form, #webform-submission-award-consulatation-form-node-47-add-form').find('.g-recaptcha').css('float','left');
+    $(document).on("change", "#webform-submission-checklist-page-form-node-520-add-form #edit-name, #webform-submission-award-consulatation-form-node-313-add-form #edit-name, #webform-submission-award-consulatation-form-node-500-add-form #edit-name, #webform-submission-award-consulatation-form-node-47-add-form #edit-name", function () {
+		var contactForm= $(this).parents("form.contact_form_valid");
+		nameFieldValidation(contactForm,true);
+	});
+    $(document).on("change", "#webform-submission-checklist-page-form-node-520-add-form #edit-email, #webform-submission-award-consulatation-form-node-313-add-form #edit-email, #webform-submission-award-consulatation-form-node-500-add-form #edit-email, #webform-submission-award-consulatation-form-node-47-add-form #edit-email", function () {
+		var contactForm= $(this).parents("form.contact_form_valid");
+		emailFieldValidation(contactForm,true);
+	});
+    $(document).on("change", "#webform-submission-checklist-page-form-node-520-add-form #edit-phone, #webform-submission-award-consulatation-form-node-313-add-form #edit-phone, #webform-submission-award-consulatation-form-node-500-add-form #edit-phone, #webform-submission-award-consulatation-form-node-47-add-form #edit-phone", function () {
+		var contactForm= $(this).parents("form.contact_form_valid");
+		phoneFieldValidation(contactForm,true);
+	});
     $(document).on("click", ".checklist_form_btn", function () { //Checklist page form id
         var contactForm = $(this).parents("form.contact_form_valid");
-        formValidator(contactForm); //formValidator("#webform-client-form-292");
+		var hasValid=false;
+		hasValid= nameFieldValidation(contactForm,hasValid);
+		hasValid= emailFieldValidation(contactForm,hasValid);
+		hasValid= phoneFieldValidation(contactForm,hasValid);		
+			if(hasValid!=true){
+				return hasValid;
+			}
+        // formValidator(contactForm); //formValidator("#webform-client-form-292");
+		
+					var name = contactForm.find("#edit-name").val();
+                    var email = contactForm.find("#edit-email").val();
+                    var company = contactForm.find("#edit-company").val();
+                    var contact = contactForm.find("#edit-phone").val();
+                    var country = contactForm.find("#edit-country").val();
+                    var comment = contactForm.find("#edit-comment").val();
+					var contact_form_id=contactForm.attr('id');
 
+
+                    // var honey_form_value = $(id_class).find("input[name=form_build_id]").val();
+                    // var honey_form_id = $(id_class).find("input[name=form_token]").val();
+
+                    var googleResponse = "";
+                    console.log("testing");
+
+                    if (contactForm.find('.g-recaptcha-response').length) {
+                        googleResponse = contactForm.find('.g-recaptcha-response').val();
+                    }
+                    if (!googleResponse) {
+                        console.log("Captcha not  "+googleResponse);
+                        contactForm.parents('.get-form').prev("#captchaError").css("display", "block");
+                        return false;
+                    } else {
+						contactForm.parents('.get-form').prev("#captchaError").hide();
+					contactForm.find(".checklist_form_btn").attr({
+                            disabled: true,
+                            value: "Sending..."
+                        });
+					}
+                    $.ajax({
+                        type: "POST",
+                        url: base_path + 'cross_site_form',
+                        data: {
+                            form_id: contact_form_id,
+                            name: name,
+                            email: email,
+                            contact: contact,
+                            country: country,
+                            comment: comment,
+                            // honey_form_value: honey_form_value,
+                            // honey_form_id: honey_form_id,
+                            googleResponse: googleResponse
+                        },
+                        success: function (result) {
+                            if (result == true) { // if (result != '') {
+                                $("#"+contact_form_id).trigger("reset").hide();
+                                $(".success_msg_class").fadeIn().show(1000); //.delay(2000).fadeOut();
+                                ga('send', 'pageview', '/contactUs/thanks.html');
+                            } else {}
+                        }
+                    })
+		return false;
     });
     // $(document).on("submit", ".checklist_form_btn", function () { //Checklist page form id
     //     var contactForm = $(this).parents("form.contact_form_valid");
@@ -97,16 +222,15 @@ $(document).ready(function () {
         var contactForm = $(this).parents("form.contact_form_valid");
         formValidator(contactForm); //formValidator("#webform-client-form-292");
     });
-    $(document).on("click", "#framework_form_submit_btn", function () { //Framework page contact form
-        big_formValidator("#webform-client-form-171");
+    $(document).on("click", ".framework_form_submit_btn", function (e) { //Framework page contact form
+        big_formValidator("#webform-submission-frameworks-contact-form-node-166-add-form");
     });
 
     /************************Apply validation on webforms END**********************/
     /**************************Define Validation Start  "**************************/
     function formValidator(form_btn_id) {
         var contact_form_id = $(form_btn_id).attr("id");
-        console.log(contact_form_id);
-        form_btn_id.validate({
+		form_btn_id.validate({
             rules: {
                 'submitted[first_name]': {
                     required: true, //alpha to restrict all except alphabate
@@ -120,12 +244,12 @@ $(document).ready(function () {
                     custom_minlength: 2,
                     custom_maxlength: 30
                 },
-                'submitted[email]': {
+                'email': {
                     required: true,
                     email: true,
                     check_mail_valid: true
                 },
-                'submitted[name]': {
+                'name': {
                     required: true, //alpha to restrict all except alphabate
                     user_name: true,
                     custom_minlength: 2,
@@ -136,7 +260,7 @@ $(document).ready(function () {
                     custom_minlength: 1,
                     country_code: true
                 },
-                'submitted[phone]': {
+                'phone': {
                     required: true,
                     custom_maxlength: 15,
                     custom_minlength: 6,
@@ -151,7 +275,7 @@ $(document).ready(function () {
                 }
             },
             messages: {
-                'submitted[name]': {
+                'name': {
                     required: "Please enter  your name",
                     custom_minlength: 'Name must be between 2 and 30 characters long.',
                     custom_maxlength: 'Name must be between 2 and 30 characters long.',
@@ -169,7 +293,7 @@ $(document).ready(function () {
                     custom_maxlength: 'Name must be between 2 and 30 characters long.',
                     user_name: "Alphabets only"
                 },
-                'submitted[email]': {
+                'email': {
                     required: "Please enter your email address",
                     email: "Invalid email id",
                     check_mail_valid: "Please enter valid mail id"
@@ -178,7 +302,7 @@ $(document).ready(function () {
                     required: "Please enter your country code",
                     custom_minlength: 'Country Code must be between 2 and 5 digit long.',
                 },
-                'submitted[phone]': {
+                'phone': {
                     required: "Please enter your phone number",
                     telephoneNumber: 'Please enter valid Phone number',
                     custom_minlength: 'Phone number at least 6 digits long.'
@@ -235,7 +359,7 @@ $(document).ready(function () {
                 }
 
                 if (contact_form_id == "webform-submission-award-consulatation-form-node-313-add-form") { //Checklist page form
-                    alert("dsadsad"); return false;
+                    console.log("dsadsad");
                     var id_class;
                     if ($("#free_consultation_form_popup").css("display") == "block") {
                         id_class = "#free_consultation_form_popup";
@@ -379,28 +503,28 @@ $(document).ready(function () {
     function big_formValidator(form_btn_id) {
         $(form_btn_id).validate({
             rules: {
-                'submitted[first_name]': {
+                'first_name': {
                     required: true,
                     user_name: true, //alpha to restrict all except alphabate
                     custom_minlength: 2,
                     custom_maxlength: 30
                 },
-                'submitted[last_name]': {
+                'last_name': {
                     required: true,
                     user_name: true,
                     custom_minlength: 2,
                     custom_maxlength: 30
                 },
-                'submitted[company_name]': {
+                'company_name': {
                     required: true,
                     custom_minlength: 2
                 },
-                'submitted[email]': {
+                'email': {
                     required: true,
                     check_mail_valid: true,
                     email: true
                 },
-                'submitted[telephone_1]': {
+                'telephone_1': {
                     custom_minlength: 6,
                     telephoneNumber: true
                 },
@@ -408,29 +532,29 @@ $(document).ready(function () {
                     custom_minlength: 6,
                     telephoneNumber: true
                 },
-                'submitted[which_ecommerce_platform_are_you_using]': {
+                'which_ecommerce_platform_are_you_using': {
                     minlength: 5
                 },
-                'submitted[zip_code]': {
+                'zip_code': {
                     required: true,
                     custom_minlength: 4,
                     zip_code: true
                 },
             },
             messages: {
-                'submitted[first_name]': {
+                'first_name': {
                     required: 'Please enter your name',
                     user_name: 'Alphabets only', //alpha to restrict all except alphabate
                     custom_minlength: 'First name must be between 2 and 30 characters long.',
                     custom_maxlength: 'First name must be between 2 and 30 characters long.'
                 },
-                'submitted[last_name]': {
+                'last_name': {
                     required: 'Please enter your last name',
                     user_name: 'Alphabets only', //alpha to restrict all except alphabate
                     custom_minlength: 'Last name must be between 2 and 30 characters long.',
                     custom_maxlength: 'Last name must be between 2 and 30 characters long.'
                 },
-                'submitted[telephone_1]': {
+                'telephone_1': {
                     telephoneNumber: 'Please enter valid Phone number',
                     custom_minlength: 'Phone number at least 6 digits long.',
                 },
@@ -438,35 +562,36 @@ $(document).ready(function () {
                     telephoneNumber: 'Please enter valid Phone number',
                     custom_minlength: 'Phone number at least 6 digits long.',
                 },
-                'submitted[email]': {
+                'email': {
                     required: "Please enter your email address",
                     email: "Invalid email id",
                     check_mail_valid: "Please enter valid mail id"
                 },
-                'submitted[company_name]': {
+                'company_name': {
                     required: 'Please enter your company name',
                     custom_minlength: 'Company Name at least 2 characters long.',
                 }
             },
             submitHandler: function (form) {
-                var ar = form_btn_id.split('-');
-                var form_id = ar[ar.length - 1];
+                // var ar = form_btn_id.split('-');
+                // var form_id = ar[ar.length - 1];
+                var form_id = jQuery('input[name=form_id]').val();
                 var first_name, company_name, url, email, tel1, e_platform, country;
-                if (form_id == "171") { //Framework page form
-                    $("#contact-form").find("#framework_form_submit_btn").attr({
+                // if (form_id == "171") { //Framework page form
+                    $("#webform-submission-frameworks-contact-form-node-166-add-form").find(".framework_form_submit_btn").attr({
                         value: "Sending...",
                         disabled: true,
                     });
-                    first_name = $("#edit-submitted-first-name").val();
-                    company_name = $("#edit-submitted-company-name").val();
-                    url = $("#edit-submitted-ecommerce-store-url").val();
-                    email = $("#edit-submitted-email--2").val();
-                    tel1 = $("#edit-submitted-telephone-1").val();
-                    e_platform = $("#edit-submitted-which-ecommerce-platform-are-you-using").val();
-                    country = $("#edit-submitted-country--2").val();
-                    $.ajax({
+                    first_name = $("#edit-first-name").val();
+                    company_name = $("#edit-company-name-").val();
+                    url = $("#edit-ecommerce-store-url").val();
+                    email = $("#edit-email").val();
+                    tel1 = $("#edit-telephone-1").val();
+                    e_platform = $("#edit-which-ecommerce-platform-are-you-using-").val();
+                    country = $("#edit-country").val();
+                    jQuery.ajax({
                         type: "POST",
-                        url: Drupal.settings.basePath + 'cross_site_form',
+                        url:  base_path+'cross_site_form',
                         data: {
                             form_id: form_id,
                             first_name: first_name,
@@ -479,19 +604,20 @@ $(document).ready(function () {
                         },
                         success: function (result) {
                             if (result == true) { // if (result != '') {
-                                $("#contact-form").find("#framework_form_submit_btn").attr({
+                                $("#webform-submission-frameworks-contact-form-node-166-add-form").find(".framework_form_submit_btn").attr({
                                     value: "Submit",
                                     disabled: false
                                 });
-                                $("#webform-client-form-171").hide();
+                                $("#webform-submission-frameworks-contact-form-node-166-add-form").hide();
                                 $("#talkmsg_framework_page").css("display", "block !important").fadeIn().show(1000); //21-3-16
                                 ga('send', 'pageview', '/contactUs/thanks.html');
-                                b
                                 // $("#webform-client-form-171").delay(3000).fadeIn().trigger("reset");//reset this form on reload a page;
                             } else {}
                         }
                     });
-                }
+					
+                // }
+			return false;
             }
         });
     }

@@ -20,19 +20,19 @@ global-styling-and-scripts:
       css/drupal_login.css: {}
 
   js:
-    js/jquery.js: {}
     js/bootstrap-select.min.js: {}
     js/ekko_lightbox.min.js: {}
     js/bootstrap.min.js: {}
     js/owl.carousel.min.js: {}
-    js/main.js: {}
-    js/custom_task.js: {}
-    js/validation_internal.js: {}
     js/jquery.fullPage.min.js: {}
     js/jquery.validate.min.js: {}
+    js/main.js: {}
+    js/custom_task.js: {}
     js/responsive_tabs.js: {}
     js/swipe.js: {}
     js/captcha-api.js: {}
+    js/validation_internal.js: {}
   dependencies:
+    - core/jquery
     - core/drupalSettings
 

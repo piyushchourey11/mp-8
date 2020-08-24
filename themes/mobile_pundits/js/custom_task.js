@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log(drupalSettings.basePath);
 //  $('<div class="g-recaptcha" data-sitekey="6LeDPlUUAAAAAC14BexZMoP1gqvSbLZSfYigjUvfcXkroScK"></div>').insertBefore("#webform-client-form-292 .url-textfield");
     //$().append('');
     /*Extra*/
