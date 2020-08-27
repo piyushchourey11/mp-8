@@ -88,12 +88,15 @@ class FieldMenuBlock extends SystemMenuBlock {
    */
   public function build() {
     $build = parent::build();
-    $build['#theme'] = $this->addThemeSuggestion($build['#theme']);
+    if (isset($build['#theme'])) {
+      $build['#theme'] = $this->addThemeSuggestion($build['#theme']);
+    }
     $build['#view_mode'] = $this->configuration['view_mode'];
     if ($this->configuration['view_mode_override_field'] != '_none') {
       $build['#view_mode_override_field'] = $this->configuration['view_mode_override_field'];
     }
 
+    // TODO: inject this dependency.
     $moduleHandler = \Drupal::service('module_handler');
     if ($moduleHandler->moduleExists('menu_ui')) {
       $menuName = $this->getDerivativeId();

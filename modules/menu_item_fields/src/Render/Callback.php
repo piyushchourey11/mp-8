@@ -2,21 +2,21 @@
 
 namespace Drupal\menu_item_fields\Render;
 
+use Drupal\Core\Security\TrustedCallbackInterface;
+
 /**
  * Provides a trusted callbacks to alter some elements markup.
  *
- * NOTE:
- * When dropping compatibility for Drupal < 8.8.0 this object
- * needs to implement
- * Drupal\Core\Render\Element\RenderCallbackInterface;
- *
- * @see https://www.drupal.org/node/2966725
- *
- * @see https://git.drupalcode.org/project/drupal/commit/5a42b47b6ed88a3bf65ff8d23ee24f49ccd20b61#7597429dcbbf29cc3aaf9f732750eeb93a0e61a5_0_1
- *
  * @see menu_item_fields_preprocess_menu__field_content()
  */
-class Callback {
+class Callback implements TrustedCallbackInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks() {
+    return ['preRenderMenuLinkContent'];
+  }
 
   /**
    * Fill the the link field with values from the menu item.
@@ -24,6 +24,10 @@ class Callback {
    * #pre_render callback.
    */
   public static function preRenderMenuLinkContent($element) {
+    // We skip processing if link field is not in display output.
+    if (!isset($element['link'])) {
+      return $element;
+    }
     $contentLink = &$element['link'][0];
     $contentUrl = &$contentLink['#url'];
 

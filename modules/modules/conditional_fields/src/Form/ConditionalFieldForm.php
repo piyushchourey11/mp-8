@@ -141,9 +141,9 @@ class ConditionalFieldForm extends FormBase {
           $field_instance->isRequired() &&
           in_array($state, ['!visible', 'disabled', '!required'])
         ) {
-          $form_state->setErrorByName('state', $this->t('Field !field is required and can not have state !state.', [
-            '!field' => $field_instance->getLabel() . ' (' . $field_instance->getName() . ')',
-            '!state' => $all_states[$state],
+          $form_state->setErrorByName('state', $this->t('Field %field is required and can not have state %state.', [
+            '%field' => $field_instance->getLabel() . ' (' . $field_instance->getName() . ')',
+            '%state' => $all_states[$state],
           ]));
         }
       }
@@ -256,6 +256,15 @@ class ConditionalFieldForm extends FormBase {
     $form_display_entity = $this->entityTypeManager
       ->getStorage('entity_form_display')
       ->load("$entity_type.$bundle_name.default");
+
+    if (empty($form_display_entity) && $entity_type == 'taxonomy_term') {
+      $form_display_entity = $this->entityTypeManager->getStorage('entity_form_display')->create([
+        'targetEntityType' => 'taxonomy_term',
+        'bundle' => $bundle_name,
+        'mode' => 'default',
+        'status' => TRUE,
+      ]);
+    }
 
     if (!$form_display_entity) {
       return $form['table'];

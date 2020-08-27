@@ -6,3 +6,8 @@ core: 8.x
 regions:
   content: Content
   help: Help
+
+# Information added by Drupal.org packaging script on 2020-08-05
+version: '8.9.3'
+project: 'drupal'
+datestamp: 1596665109

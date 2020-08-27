@@ -8,8 +8,7 @@ $(document).ready(function () {
 //                alert(result);
 //            }
 //        });
-//    
-
+//  
     
     /******************************--owl_carousel random function---***************/
     function random(owlSelector) {
@@ -147,7 +146,7 @@ $(document).ready(function () {
         $("#back_bg_popup").show();
         $("#back_bg_car").show();
         $.ajax({type: "POST",
-            url: drupalSettings.basePath + '/popup_model',
+            url: base_path + 'popup_model',
             data: {id: id},
             success: function (result) {
                 if (result.html !== "") {
@@ -184,7 +183,7 @@ $(document).ready(function () {
         var id = $(this).attr("value");
         e.preventDefault();
         $.ajax({type: "POST",
-            url: drupalSettings.basePath + '/popup_model',
+            url: base_path + 'popup_model',
             data: {id: id},
             success: function (result) { 
                 if (result.html !== "") {
@@ -194,7 +193,7 @@ $(document).ready(function () {
                     $(".pdf_dwn").on('click',function(event){ 
                         event.preventDefault();//PDF DOWNLOAD 
                         var pdf_id = ($(this).attr("href")).split("/").pop();
-                        window.location.assign("downloads/pdf/" + pdf_id);
+                        window.location.assign("download/pdf/" + pdf_id);
                     });
                     $("#back_bg_popup").hide();
                     $("#" + id).modal('toggle');

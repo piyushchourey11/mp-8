@@ -11,7 +11,7 @@ use Drupal\Core\Site\Settings;
 use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class CdnFarfutureController {
@@ -56,17 +56,15 @@ class CdnFarfutureController {
    * @param string $scheme
    *   The file's scheme.
    *
-   * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+   * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Symfony\Component\HttpFoundation\Response
    *   The response that will efficiently send the requested file.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
    *   Thrown when the 'relative_file_url' query argument is not set, which can
    *   only happen in case of malicious requests or in case of a malfunction in
    *   \Drupal\cdn\PathProcessor\CdnFarfuturePathProcessor.
-   * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
-   *   Thrown when an invalid security token is provided.
    */
-  public function downloadByScheme(Request $request, string $security_token, int $mtime, string $scheme) : BinaryFileResponse {
+  public function downloadByScheme(Request $request, string $security_token, int $mtime, string $scheme) : Response {
     // Validate the scheme early.
     if (!$request->query->has('relative_file_url') || ($scheme !== FileUrlGenerator::RELATIVE && !$this->streamWrapperManager->isValidScheme($scheme))) {
       throw new BadRequestHttpException();
@@ -76,7 +74,7 @@ class CdnFarfutureController {
     $relative_file_url = $request->query->get('relative_file_url');
     $calculated_token = Crypt::hmacBase64($mtime . $scheme . $relative_file_url, $this->privateKey->get() . Settings::getHashSalt());
     if ($security_token !== $calculated_token) {
-      throw new AccessDeniedHttpException('Invalid security token.');
+      return new Response('Invalid security token.', 403);
     }
 
     // A relative URL for a file contains '%20' instead of spaces. A relative
@@ -105,15 +103,13 @@ class CdnFarfutureController {
    * @param int $mtime
    *   The file's mtime.
    *
-   * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+   * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|\Symfony\Component\HttpFoundation\Response
    *   The response that will efficiently send the requested file.
    *
    * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
    *   Thrown when the 'root_relative_file_url' query argument is not set, which
    *   can only happen in case of malicious requests or in case of a malfunction
    *   in \Drupal\cdn\PathProcessor\CdnFarfuturePathProcessor.
-   * @throws \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
-   *   Thrown when an invalid security token is provided.
    *
    * @todo Remove in 4.x.
    */
@@ -127,7 +123,7 @@ class CdnFarfutureController {
     $root_relative_file_url = $request->query->get('root_relative_file_url');
     $calculated_token = Crypt::hmacBase64($mtime . $root_relative_file_url, $this->privateKey->get() . Settings::getHashSalt());
     if ($security_token !== $calculated_token) {
-      throw new AccessDeniedHttpException('Invalid security token.');
+      return new Response('Invalid security token.', 403);
     }
 
     // A relative URL for a file contains '%20' instead of spaces. A relative

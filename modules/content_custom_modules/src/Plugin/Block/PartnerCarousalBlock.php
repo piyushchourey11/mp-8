@@ -89,8 +89,8 @@ class PartnerCarousalBlock extends BlockBase {
 
   $html.='</div></div></div><!--Close 2 div 10-3-16-->
   <!-- Carousel Buttons Next/Prev -->
-  <a data-slide="prev"  href="#" class="left carousel-control"><i class="fa fa fa-angle-left"></i></a>
-  <a data-slide="next" href="#" class="right carousel-control"><i class="fa fa fa-angle-right"></i></a>
+  <a data-slide="prev"  href="javascript:void(0);" class="left carousel-control"><i class="fa fa fa-angle-left"></i></a>
+  <a data-slide="next" href="javascript:void(0);" class="right carousel-control"><i class="fa fa fa-angle-right"></i></a>
 </div>                          
 </div>
 </div>';

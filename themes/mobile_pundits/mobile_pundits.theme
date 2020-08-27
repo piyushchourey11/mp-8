@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 /**
 * Implements hook_preprocess().
 */
@@ -115,8 +115,4 @@ function mobile_pundits_preprocess_menu(&$variables, $hook) {
 //    // honeypot_add_form_protection($form, $form_state, array('honeypot', '20'));
 
 // }
-
-
-?>
-
 

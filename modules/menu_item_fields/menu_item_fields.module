@@ -101,8 +101,8 @@ function menu_item_fields_preprocess_menu__field_content(&$variables) {
       $menuLinkContent = $entityRepository->loadEntityByUuid('menu_link_content', $uuid);
 
       // Override the view mode with a field value.
-      $viewMode = $variables['view_mode'];
-      if ($variables['view_mode_override_field']) {
+      $viewMode = $variables['view_mode'] ?? 'default';
+      if ($variables['view_mode_override_field'] ?? '') {
         $viewModeValue = $menuLinkContent->get($variables['view_mode_override_field'])->getString();
         if ($viewModeValue && $viewDisplayStorage->load('menu_link_content.' . $menuLinkContent->bundle() . '.' . $viewModeValue)) {
           $viewMode = $viewModeValue;
@@ -120,8 +120,8 @@ function menu_item_fields_preprocess_menu__field_content(&$variables) {
     if ($item['below']) {
       $below_variables = [
         'items' => $item['below'],
-        'view_mode' => $variables['view_mode'],
-        'view_mode_override_field' => $variables['view_mode_override_field'],
+        'view_mode' => $variables['view_mode'] ?? '',
+        'view_mode_override_field' => $variables['view_mode_override_field'] ?? '',
       ];
       menu_item_fields_preprocess_menu__field_content($below_variables);
       $item['below'] = $below_variables['items'];

@@ -135,7 +135,7 @@ class FrontResourcesBlock extends BlockBase {
                             </div>';
             $count++;
         }   
-        $html.=' <a href="'.$base_url.'/success_story"><button id="succ_view_btn" class="btn btn-danger" ">View More</button></a>
+        $html.=' <a href="'.$base_url.'/success-stories"><button id="succ_view_btn" class="btn btn-danger" ">View More</button></a>
             </div></div></div></div></div>';      
         }
 

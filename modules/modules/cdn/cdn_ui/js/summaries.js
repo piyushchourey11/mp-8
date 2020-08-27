@@ -1,3 +1,8 @@
+/**
+ * @file
+ * CDN UI summaries for the vertical tabs in settings form.
+ */
+
 (function ($, Drupal) {
 
   'use strict';
@@ -18,7 +23,7 @@
       $('[data-drupal-selector="edit-wrappers"]').drupalSetSummary(function () {
         var additional = $('[data-drupal-selector="edit-wrappers-stream-wrappers"] input:checked');
         var wrappers = [];
-        additional.each(function(index) {
+        additional.each(function (index) {
           wrappers.push(this.getAttribute('value'));
         });
         return wrappers.join(', ');
@@ -33,9 +38,11 @@
             case 'all':
               which = Drupal.t('all files');
               break;
+
             case 'nocssjs':
               which = Drupal.t('all files except CSS+JS');
               break;
+
             case 'limited':
               which = Drupal.t('some files');
               break;
