@@ -601,13 +601,13 @@ use Drupal\Component\Utility\Xss;
 				// $company_name = Xss::filter($_POST['company']);
 				$country = Xss::filter($_POST['country']);
 				$email = Xss::filter($_POST['email']);
-				$comments = Xss::filter($_POST['comment']);
+				$comment = Xss::filter($_POST['comment']);
 				$contact = Xss::filter($_POST['contact']); 
 				$data = array(
                 'name' => ($fname),
                 'country' =>($country),
                 'email' => ($email),
-                'comments' => ($comments),
+                'comment' => ($comment),
                 'contact' => ($contact)
                );
 			}
@@ -617,13 +617,13 @@ use Drupal\Component\Utility\Xss;
 				// $company_name = Xss::filter($_POST['company']);
 				$country = Xss::filter($_POST['country']);
 				$email = Xss::filter($_POST['email']);
-				$comments = Xss::filter($_POST['comment']);
+				$comment = Xss::filter($_POST['comment']);
 				$contact = Xss::filter($_POST['contact']); 
 				$data = array(
                 'name' => ($fname),
                 'country' =>($country),
                 'email' => ($email),
-                'comments' => ($comments),
+                'comment' => ($comment),
                 'phone' => ($contact)
                );
 			}
@@ -633,13 +633,13 @@ use Drupal\Component\Utility\Xss;
 				// $company_name = Xss::filter($_POST['company']);
 				$country = Xss::filter($_POST['country']);
 				$email = Xss::filter($_POST['email']);
-				$comments = Xss::filter($_POST['comment']);
+				$comment = Xss::filter($_POST['comment']);
 				$contact = Xss::filter($_POST['contact']); 
 				$data = array(
                 'name' => ($fname),
                 'country' =>($country),
                 'email' => ($email),
-                'comments' => ($comments),
+                'comment' => ($comment),
                 'phone' => ($contact)
                );
 			}
@@ -649,13 +649,13 @@ use Drupal\Component\Utility\Xss;
 				// $company_name = Xss::filter($_POST['company']);
 				$country = Xss::filter($_POST['country']);
 				$email = Xss::filter($_POST['email']);
-				$comments = Xss::filter($_POST['comment']);
+				$comment = Xss::filter($_POST['comment']);
 				$contact = Xss::filter($_POST['contact']); 
 				$data = array(
                 'name' => ($fname),
                 'country' =>($country),
                 'email' => ($email),
-                'comments' => ($comments),
+                'comment' => ($comment),
                 'phone' => ($contact)
                );
 			}

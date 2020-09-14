@@ -9,7 +9,7 @@ $(document).ready(function () {
 //            }
 //        });
 //  
-    
+$('#contact_list').selectpicker();    
     /******************************--owl_carousel random function---***************/
     function random(owlSelector) {
         owlSelector.children().sort(function () {

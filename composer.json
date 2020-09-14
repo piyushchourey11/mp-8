@@ -8,34 +8,18 @@
         "docs": "https://www.drupal.org/docs/user_guide/en/index.html",
         "chat": "https://www.drupal.org/node/314178"
     },
-    "repositories": {
-        "0": {
+    "repositories": [
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         }
-    },
+    ],
     "require": {
-        "algolia/places": "*",
-        "ckeditor/autogrow": "*",
-        "ckeditor/codemirror": "*",
-        "ckeditor/fakeobjects": "*",
-        "ckeditor/image": "*",
-        "ckeditor/link": "*",
-        "codemirror/codemirror": "*",
         "composer/installers": "^1.2",
         "drupal/core-composer-scaffold": "^8.8",
         "drupal/core-project-message": "^8.8",
         "drupal/core-recommended": "^8.8",
-        "drupal/core-vendor-hardening": "^8.8",
-        "drupal/smtp": "^1.0@RC",
-        "jquery/inputmask": "*",
-        "jquery/intl-tel-input": "*",
-        "jquery/rateit": "*",
-        "jquery/select2": "*",
-        "jquery/textcounter": "*",
-        "jquery/timepicker": "*",
-        "progress-tracker/progress-tracker": "*",
-        "signature_pad/signature_pad": "*"
+        "drupal/core-vendor-hardening": "^8.8"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -98,6 +82,5 @@
                 "      composer remove drupal/core-project-message"
             ]
         }
-    },
-    "require-dev": {}
+    }
 }

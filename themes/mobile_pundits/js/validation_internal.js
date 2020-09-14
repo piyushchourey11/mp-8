@@ -11,6 +11,7 @@ jQuery(document).ready(function ($) {
 jQuery('.simple_scroller  #myCarousel-inner').css('padding-top',jQuery('#header').height()-20);
 jQuery('.simple_scroller').css('margin-top',0);
 jQuery('.inner-page-class.slim_scroller #section0').css('padding-top',jQuery('#header').height()-20);
+jQuery('.page-node-495 .inner-page-class').css('padding-top',jQuery('#header').height()-20);
 
     var insight_text, pdf_id;
     $(".insights-imgs").on("click", function () {

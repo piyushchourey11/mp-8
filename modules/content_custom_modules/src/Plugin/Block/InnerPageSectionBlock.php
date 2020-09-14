@@ -710,7 +710,7 @@ public function design_view(  $body,$selected_scroller ,$section_class) {
          }
         $return .='<div class=" '.$section_class.'">
             <div class="cont-sec">
-            '.$body.'
+            '.str_replace(array(', full_html',', filtered_html'),'',$body).'
             </div>
           </div>';
         if($selected_scroller=="Simple scroller"){
@@ -860,7 +860,7 @@ public function client_view($nodeId,$selected_scroller)
                 $return .='</div>';  
               } 
               $return.='<div class=" container">';
-               $return.=$html_body;
+               $return.=str_replace(array(', full_html',', php_code'),'',$html_body);
               
                 if($selected_scroller=="Simple scroller"){
                      $return .='</div>';
@@ -940,7 +940,7 @@ public function client_view($nodeId,$selected_scroller)
               <h3 class="'.$diff_class[$count].'">'.$differentiator_heading[$count].'</h3>
               <div class="cont-diff main-inner-para">
                 <div class="box-white"> <img src="'.$differentiator_image[$count].'"> </div>
-                '.$differentiator_content[$count].'
+                '.str_replace(array(', full_html',', php_code'),'',$differentiator_content[$count]).'
               </div>
             </div>';
             $count++;
